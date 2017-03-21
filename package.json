@@ -6,6 +6,13 @@
   "homepage": "https://github.com/GProst/webpack-clean-obsolete-chunks",
   "license": "MIT",
   "main": "index.js",
+  "keywords": [
+    "webpack",
+    "clean",
+    "remove",
+    "chunks",
+    "plugin"
+  ],
   "scripts": {
     "test": "test"
   },
