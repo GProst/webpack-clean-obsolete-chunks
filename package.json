@@ -14,8 +14,9 @@
     "plugin"
   ],
   "scripts": {
-    "test": "mocha",
-    "test-watch": "mocha --watch"
+    "test": "mocha \"test/**/*.spec.js\"",
+    "test-watch": "mocha \"test/**/*.spec.js\" --watch",
+    "coverage": "istanbul cover _mocha -- \"test/**/*.spec.js\""
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "webpack": "^2.2.1",
     "webpack-stream": "^3.2.0"
