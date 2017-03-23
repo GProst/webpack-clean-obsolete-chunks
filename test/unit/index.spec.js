@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const sinon = require('sinon');
 
 const CleanObsoleteChunks = require('./../../index');
 
@@ -10,6 +11,19 @@ describe('CleanObsoleteChunks', () => {
       inst = new CleanObsoleteChunks();
     });
     
+    describe(
+      `in order to be able to work as a webpack plugin and remove obsolete chunks files in webpack 
+      watch mode`,
+      () => {
+        it('SHOULD have a apply(compiler) method to call', () => {
+          expect(inst).to.respondTo('apply');
+        });
+        
+        it('SHOULD have a _removeObsoleteFiles(compilation, done) method to call', () => {
+          expect(inst).to.respondTo('_removeObsoleteFiles');
+        });
+      });
+    
     describe('in order to keep chunks versions', () => {
       it('SHOULD have an empty object in its chunkVersions property after constructed', () => {
         expect(inst).to.have.property('chunkVersions').that.deep.equals({});
@@ -17,11 +31,23 @@ describe('CleanObsoleteChunks', () => {
     });
     
     describe('in order to save chunks versions', () => {
-      it('SHOULD have a saveChunkConfig method to call', () => {
-        expect(inst).to.respondTo('saveChunkConfig');
+      it('SHOULD have a _saveChunkConfig method to call', () => {
+        expect(inst).to.respondTo('_saveChunkConfig');
+      });
+    });
+    
+    describe(`in order to get obsolete chunk files`, () => {
+      it('SHOULD have a _getObsoleteFiles method to call', () => {
+        expect(inst).to.respondTo('_getObsoleteFiles');
       });
       
-      describe('via its saveChunkConfig(chunk) method', () => {
+      it('SHOULD have a _getChunkObsoleteFiles method to call', () => {
+        expect(inst).to.respondTo('_getChunkObsoleteFiles');
+      });
+    });
+    
+    describe(`method _saveChunkConfig(chunk)`, () => {
+      describe('in order to save chunks versions', () => {
         it(`SHOULD add or update its deep chunkVersions[chunk.name] property`, () => {
           let chunkName = 'testChunkName';
           expect(inst.chunkVersions).to.not.have.property(chunkName);
@@ -30,11 +56,11 @@ describe('CleanObsoleteChunks', () => {
             files: ['test-file-name1'],
             hash: 'hash1'
           };
-          inst.saveChunkConfig(chunk);
+          inst._saveChunkConfig(chunk);
           expect(inst.chunkVersions).to.have.property(chunk.name);
           let oldValue = inst.chunkVersions[chunk.name];
           let updatedChunk = Object.assign(chunk, {files: ['test-file-name2'], hash: 'hash2'});
-          inst.saveChunkConfig(updatedChunk);
+          inst._saveChunkConfig(updatedChunk);
           expect(oldValue).to.not.be.equal(inst.chunkVersions[updatedChunk.name]);
         });
         
@@ -47,7 +73,7 @@ describe('CleanObsoleteChunks', () => {
               files: ['test'],
               hash: testHash
             };
-            inst.saveChunkConfig(chunk);
+            inst._saveChunkConfig(chunk);
             expect(inst.chunkVersions[chunk.name]['hash']).to.be.equal(testHash);
           }
         );
@@ -61,11 +87,173 @@ describe('CleanObsoleteChunks', () => {
               files: files,
               hash: 'hash'
             };
-            inst.saveChunkConfig(chunk);
+            inst._saveChunkConfig(chunk);
             expect(inst.chunkVersions[chunk.name]['files']).to.be.equal(files);
           }
         );
+      });
+      
+    });
+    
+    describe(`method _getObsoleteFiles(compilation)`, () => {
+      describe(`in order to get obsolete chunk files`, () => {
+        it(`SHOULD call _getChunkObsoleteFiles(chunk) for each chunk in compilation.chunks`,
+          () => {
+            let compilation = {
+              chunks: ['chunk1', 'chunk2', 'chunk3']
+            };
+            let _getChunkObsoleteFiles = sinon.stub(inst, '_getChunkObsoleteFiles');
+            expect(_getChunkObsoleteFiles.notCalled).to.be.true;
+            inst._getObsoleteFiles(compilation);
+            expect(_getChunkObsoleteFiles.callCount).to.be.equal(3);
+            expect(_getChunkObsoleteFiles.args[0][0]).to.be.equal(compilation.chunks[0]);
+            expect(_getChunkObsoleteFiles.args[1][0]).to.be.equal(compilation.chunks[1]);
+            expect(_getChunkObsoleteFiles.args[2][0]).to.be.equal(compilation.chunks[2]);
+          });
         
+        it(`SHOULD return concatenated array of obsolete files of all of the chunks (if any)`,
+          () => {
+            let compilation = {
+              chunks: ['chunk1', 'chunk2', 'chunk3']
+            };
+            let _getChunkObsoleteFiles = sinon.stub(inst, '_getChunkObsoleteFiles');
+            _getChunkObsoleteFiles.onFirstCall().returns(['file1', 'file2']);
+            _getChunkObsoleteFiles.onSecondCall().returns(['file3', 'file4', 'file5']);
+            _getChunkObsoleteFiles.onThirdCall().returns(['file6']);
+            expect(inst._getObsoleteFiles(compilation)).to.be.deep.equal(
+              ['file1', 'file2', 'file3', 'file4', 'file5', 'file6']
+            );
+          });
+        
+        it(`SHOULD return empty array if there are no chunks`, () => {
+          let compilation = {
+            chunks: []
+          };
+          expect(inst._getObsoleteFiles(compilation)).to.be.deep.equal([]);
+        });
+        
+        it(`SHOULD return empty array if there are no obsolete files in all of the chunks`, () => {
+          let compilation = {
+            chunks: ['chunk1', 'chunk2', 'chunk3']
+          };
+          let _getChunkObsoleteFiles = sinon.stub(inst, '_getChunkObsoleteFiles').returns([]);
+          expect(inst._getObsoleteFiles(compilation)).to.be.deep.equal([]);
+        });
+        
+      });
+    });
+    
+    
+    describe(`method _getChunkObsoleteFiles(chunk)`, () => {
+      describe(`in order to get obsolete chunk files`, () => {
+        it(`SHOULD return empty array if there is no chunkVersions[chunk.name]`, () => {
+          let chunk = {
+            name: 'test'
+          };
+          expect(inst._getChunkObsoleteFiles(chunk)).to.be.deep.equal([]);
+        });
+        
+        it(`SHOULD return empty array if chunk hasn't been changed`, () => {
+          let oldChunk = {
+            name: 'test',
+            hash: 'abcde'
+          };
+          inst.chunkVersions[oldChunk.name] = oldChunk;
+          let newChunk = Object.assign({}, oldChunk);
+          expect(inst._getChunkObsoleteFiles(newChunk)).to.be.deep.equal([]);
+        });
+        
+        it(`SHOULD return only obsolete files if chunk has been changed`, () => {
+          let oldChunk = {
+            name: 'test',
+            hash: 'hash1',
+            files: ['file1(old-name)', 'file2(old-name)', 'file3(old-name)']
+          };
+          inst.chunkVersions[oldChunk.name] = {
+            hash: oldChunk.hash,
+            files: oldChunk.files
+          };
+          let newChunk = Object.assign(oldChunk, {
+            hash: 'hash2',
+            files: ['file1(old-name)', 'file2(old-name)', 'file3(new-name)']
+          });
+          expect(inst._getChunkObsoleteFiles(newChunk)).to.be.deep.equal(['file3(old-name)']);
+        });
+        
+        it(`SHOULD call _saveChunkConfig(chunk) method in any case`,
+          () => {
+            let chunk = {
+              name: 'test',
+              hash: 'abcde'
+            };
+            let _saveChunkConfig = sinon.stub(inst, '_saveChunkConfig');
+            
+            // 1) if there is no chunkVersions[chunk.name]
+            expect(_saveChunkConfig.called).to.be.false;
+            inst._getChunkObsoleteFiles(chunk);
+            expect(_saveChunkConfig.callCount).to.be.equal(1);
+            expect(_saveChunkConfig.args[0][0]).to.be.deep.equal(chunk);
+            _saveChunkConfig.reset();
+            
+            // 2) otherwise
+            inst.chunkVersions[chunk.name] = chunk;
+            expect(_saveChunkConfig.called).to.be.false;
+            inst._getChunkObsoleteFiles(chunk);
+            expect(_saveChunkConfig.callCount).to.be.equal(1);
+            expect(_saveChunkConfig.args[0][0]).to.be.deep.equal(chunk);
+          });
+        
+      });
+    });
+    
+    
+    describe(`method apply(compiler)`, () => {
+      describe('in order to remove obsolete chunks files in webpack watch mode', () => {
+        it(
+          `SHOULD get hooked on compiler 'after-emit' event and pass _removeObsoleteFiles method 
+          as a callback`,
+          () => {
+            let compiler = {
+              plugin: sinon.stub()
+            };
+            inst.apply(compiler);
+            expect(compiler.plugin.callCount).to.be.equal(1);
+            expect(compiler.plugin.args[0][0]).to.be.equal('after-emit');
+            //TODO
+          });
+      });
+    });
+    
+    
+    describe(`method _removeObsoleteFiles(compiler, compilation, done)`, () => {
+      describe(`in order to remove obsolete chunks files in webpack watch mode`, () => {
+        let done;
+        let compilation;
+        let compiler;
+        beforeEach(() => {
+          compilation = Math.random();
+          sinon.stub(inst, '_getObsoleteFiles').returns([]);
+          done = sinon.stub();
+        });
+        
+        it(`SHOULD call _getObsoleteFiles(compilation) method`, () => {
+          expect(inst._getObsoleteFiles.notCalled).to.be.true;
+          inst._removeObsoleteFiles(compiler, compilation, done);
+          expect(inst._getObsoleteFiles.callCount).to.be.equal(1);
+          expect(inst._getObsoleteFiles.args[0][0]).to.be.equal(compilation);
+        });
+        
+        it(`SHOULD call del.sync(filePath) for each obsolete file`, () => {
+          compiler = {
+            outputPath: 'absolute/path/to/output/folder/'
+          };
+        });
+        
+        it(`SHOULD call done() callback at the end`, () => {
+          expect(done.notCalled).to.be.true;
+          inst._removeObsoleteFiles(compiler, compilation, done);
+          expect(done.callCount).to.be.equal(1);
+        });
       });
     });
     
