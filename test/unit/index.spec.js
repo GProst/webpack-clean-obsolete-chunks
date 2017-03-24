@@ -1,7 +1,6 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
 const del = require('del');
-const util = require('util');
 
 const CleanObsoleteChunks = require('./../../index');
 

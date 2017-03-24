@@ -14,9 +14,12 @@
     "plugin"
   ],
   "scripts": {
-    "test": "mocha \"test/**/*.spec.js\"",
-    "test-watch": "mocha \"test/**/*.spec.js\" --watch",
-    "coverage": "istanbul cover _mocha -- \"test/**/*.spec.js\""
+    "test-unit": "mocha \"test/unit/**/*.spec.js\"",
+    "test-integration": "mocha \"test/integration/**/*.spec.js\"",
+    "test-unit-watch": "mocha \"test/unit/**/*.spec.js\" --watch",
+    "test-integration-watch": "mocha \"test/integration/**/*.spec.js\" --watch",
+    "coverage-unit": "istanbul cover _mocha -- \"test/unit/**/*.spec.js\"",
+    "coverage-integration": "istanbul cover _mocha -- \"test/integration/**/*.spec.js\""
   },
   "repository": {
     "type": "git",
@@ -30,11 +33,14 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "gulp": "^3.9.1",
+    "clean-webpack-plugin": "^0.1.16",
+    "css-loader": "^0.27.3",
+    "extract-text-webpack-plugin": "^2.1.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "sinon": "^2.1.0",
-    "webpack": "^2.2.1",
-    "webpack-stream": "^3.2.0"
+    "style-loader": "^0.16.0",
+    "webpack": "^2.3.1",
+    "webpack-chunk-hash": "^0.4.0"
   }
 }
