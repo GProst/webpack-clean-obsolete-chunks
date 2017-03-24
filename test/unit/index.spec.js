@@ -1,6 +1,7 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
 const del = require('del');
+const path = require('path');
 
 const CleanObsoleteChunks = require('./../../index');
 
@@ -228,9 +229,9 @@ describe('CleanObsoleteChunks', () => {
           expect(del.sync.notCalled).to.be.true;
           inst._removeObsoleteFiles(compiler, compilation, done);
           expect(del.sync.callCount).to.be.equal(obsoleteFiles.length);
-          expect(del.sync.args[0][0]).to.be.equal(compiler.outputPath + obsoleteFiles[0]);
-          expect(del.sync.args[1][0]).to.be.equal(compiler.outputPath + obsoleteFiles[1]);
-          expect(del.sync.args[2][0]).to.be.equal(compiler.outputPath + obsoleteFiles[2]);
+          expect(del.sync.args[0][0]).to.be.equal(path.join(compiler.outputPath, obsoleteFiles[0]));
+          expect(del.sync.args[1][0]).to.be.equal(path.join(compiler.outputPath, obsoleteFiles[1]));
+          expect(del.sync.args[2][0]).to.be.equal(path.join(compiler.outputPath, obsoleteFiles[2]));
         });
         
         it(`SHOULD call done() callback at the end`, () => {

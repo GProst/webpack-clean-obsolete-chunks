@@ -1,6 +1,7 @@
 "use strict";
 
 const del = require('del');
+const path = require('path');
 
 module.exports = CleanObsoleteChunks;
 
@@ -15,7 +16,7 @@ CleanObsoleteChunks.prototype.apply = function(compiler) {
 
 CleanObsoleteChunks.prototype._removeObsoleteFiles = function(compiler, compilation, done) {
   let obsoleteFiles = this._getObsoleteFiles(compilation);
-  let obsoleteFilesPaths = obsoleteFiles.map(fileName => compiler.outputPath + fileName);
+  let obsoleteFilesPaths = obsoleteFiles.map(fileName => path.join(compiler.outputPath, fileName));
   
   obsoleteFilesPaths.forEach((filePath) => {
     del.sync(filePath);
