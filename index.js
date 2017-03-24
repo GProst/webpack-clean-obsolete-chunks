@@ -10,7 +10,7 @@ function CleanObsoleteChunks() {
 }
 
 CleanObsoleteChunks.prototype.apply = function(compiler) {
-  compiler.plugin('after-emit', this._removeObsoleteFiles.bind(this, compiler));//FixMe
+  compiler.plugin('after-emit', this._removeObsoleteFiles.bind(this, compiler));
 };
 
 CleanObsoleteChunks.prototype._removeObsoleteFiles = function(compiler, compilation, done) {

@@ -1,5 +1,7 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
+const del = require('del');
+const util = require('util');
 
 const CleanObsoleteChunks = require('./../../index');
 
@@ -216,10 +218,14 @@ describe('CleanObsoleteChunks', () => {
             let compiler = {
               plugin: sinon.stub()
             };
+            sinon.stub(inst._removeObsoleteFiles, 'bind').returns(inst._removeObsoleteFiles);
             inst.apply(compiler);
             expect(compiler.plugin.callCount).to.be.equal(1);
             expect(compiler.plugin.args[0][0]).to.be.equal('after-emit');
-            //TODO
+            expect(compiler.plugin.args[0][1]).to.be.equal(inst._removeObsoleteFiles);
+            expect(inst._removeObsoleteFiles.bind.called).to.be.true;
+            expect(inst._removeObsoleteFiles.bind.args[0][0]).to.be.equal(inst);
+            expect(inst._removeObsoleteFiles.bind.args[0][1]).to.be.equal(compiler);
           });
       });
     });
@@ -230,23 +236,37 @@ describe('CleanObsoleteChunks', () => {
         let done;
         let compilation;
         let compiler;
+        let _getObsoleteFiles;
         beforeEach(() => {
           compilation = Math.random();
-          sinon.stub(inst, '_getObsoleteFiles').returns([]);
+          _getObsoleteFiles = sinon.stub(inst, '_getObsoleteFiles').returns([]);
           done = sinon.stub();
+          sinon.stub(del, 'sync');
+        });
+        
+        afterEach(() => {
+          del.sync.restore();
         });
         
         it(`SHOULD call _getObsoleteFiles(compilation) method`, () => {
-          expect(inst._getObsoleteFiles.notCalled).to.be.true;
+          expect(_getObsoleteFiles.notCalled).to.be.true;
           inst._removeObsoleteFiles(compiler, compilation, done);
-          expect(inst._getObsoleteFiles.callCount).to.be.equal(1);
-          expect(inst._getObsoleteFiles.args[0][0]).to.be.equal(compilation);
+          expect(_getObsoleteFiles.callCount).to.be.equal(1);
+          expect(_getObsoleteFiles.args[0][0]).to.be.equal(compilation);
         });
         
         it(`SHOULD call del.sync(filePath) for each obsolete file`, () => {
           compiler = {
             outputPath: 'absolute/path/to/output/folder/'
           };
+          let obsoleteFiles = ['obsolete-file1', 'obsolete-file2', 'obsolete-file3'];
+          _getObsoleteFiles.returns(obsoleteFiles);
+          expect(del.sync.notCalled).to.be.true;
+          inst._removeObsoleteFiles(compiler, compilation, done);
+          expect(del.sync.callCount).to.be.equal(obsoleteFiles.length);
+          expect(del.sync.args[0][0]).to.be.equal(compiler.outputPath + obsoleteFiles[0]);
+          expect(del.sync.args[1][0]).to.be.equal(compiler.outputPath + obsoleteFiles[1]);
+          expect(del.sync.args[2][0]).to.be.equal(compiler.outputPath + obsoleteFiles[2]);
         });
         
         it(`SHOULD call done() callback at the end`, () => {
