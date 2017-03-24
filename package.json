@@ -15,9 +15,8 @@
   ],
   "scripts": {
     "test-unit": "mocha \"test/unit/**/*.spec.js\"",
-    "test-integration": "mocha \"test/integration/**/*.spec.js\"",
     "test-unit-watch": "mocha \"test/unit/**/*.spec.js\" --watch",
-    "test-integration-watch": "mocha \"test/integration/**/*.spec.js\" --watch",
+    "test-integration": "mocha \"test/integration/**/*.spec.js\" --timeout 15000",
     "coverage-unit": "istanbul cover _mocha -- \"test/unit/**/*.spec.js\"",
     "coverage-integration": "istanbul cover _mocha -- \"test/integration/**/*.spec.js\""
   },
