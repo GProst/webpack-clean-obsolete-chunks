@@ -13,41 +13,6 @@ describe('CleanObsoleteChunks', () => {
       inst = new CleanObsoleteChunks();
     });
     
-    describe(
-      `in order to be able to work as a webpack plugin and remove obsolete chunks files in webpack 
-      watch mode`,
-      () => {
-        it('SHOULD have a apply(compiler) method to call', () => {
-          expect(inst).to.respondTo('apply');
-        });
-        
-        it('SHOULD have a _removeObsoleteFiles(compilation, done) method to call', () => {
-          expect(inst).to.respondTo('_removeObsoleteFiles');
-        });
-      });
-    
-    describe('in order to keep chunks versions', () => {
-      it('SHOULD have an empty object in its chunkVersions property after constructed', () => {
-        expect(inst).to.have.property('chunkVersions').that.deep.equals({});
-      });
-    });
-    
-    describe('in order to save chunks versions', () => {
-      it('SHOULD have a _saveChunkConfig method to call', () => {
-        expect(inst).to.respondTo('_saveChunkConfig');
-      });
-    });
-    
-    describe(`in order to get obsolete chunk files`, () => {
-      it('SHOULD have a _getObsoleteFiles method to call', () => {
-        expect(inst).to.respondTo('_getObsoleteFiles');
-      });
-      
-      it('SHOULD have a _getChunkObsoleteFiles method to call', () => {
-        expect(inst).to.respondTo('_getChunkObsoleteFiles');
-      });
-    });
-    
     describe(`method _saveChunkConfig(chunk)`, () => {
       describe('in order to save chunks versions', () => {
         it(`SHOULD add or update its deep chunkVersions[chunk.name] property`, () => {
