@@ -24,6 +24,13 @@ module.exports = {
     // ...
 };
 ```
+
+## How it works
+
+Plugin searches for all updated chunks and deletes obsolete files in output directory after each 
+webpack compilation.
+
+
 # Contribution
 
 You're free to contribute to this project by submitting
