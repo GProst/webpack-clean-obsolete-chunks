@@ -1,6 +1,6 @@
 {
   "name": "webpack-clean-obsolete-chunks",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A webpack plugin to remove obsolete chunk files in webpack watch mode",
   "author": "GProst a.k.a. German Prostakov <gprostmail@gmail.com>",
   "homepage": "https://github.com/GProst/webpack-clean-obsolete-chunks",
