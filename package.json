@@ -22,7 +22,7 @@
     "test-integration": "mocha \"test/integration/**/*.spec.js\" --timeout 15000",
     "coverage-unit": "istanbul cover _mocha -- \"test/unit/**/*.spec.js\"",
     "coverage-integration": "istanbul cover _mocha -- \"test/integration/**/*.spec.js\"",
-    "coverall": "istanbul cover _mocha --report lcovonly -- \"test/integration/**/*.spec.js\" && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "coveralls": "istanbul cover _mocha --report lcovonly -- \"test/integration/**/*.spec.js\" && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,7 @@
 # webpack-clean-obsolete-chunks
+[![npm version](https://badge.fury.io/js/webpack-clean-obsolete-chunks.svg)](https://badge.fury.io/js/webpack-clean-obsolete-chunks)
+[![Coverage Status](https://coveralls.io/repos/github/GProst/webpack-clean-obsolete-chunks/badge.svg?branch=master)](https://coveralls.io/github/GProst/webpack-clean-obsolete-chunks?branch=master)
+
 A webpack plugin to remove obsolete chunk files in webpack watch mode. 
 Especially useful when use hashes in output file names.
 
