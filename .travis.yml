@@ -8,11 +8,11 @@ env:
 cache:
   yarn: true
 
-before_install: cd $TRAVIS_BUILD_DIR
 install:
   - yarn
-  - cd ./test/integration/env/webpack-1 && yarn
-  - cd ./test/integration/env/webpack-2 && yarn
+  - cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-1 && yarn
+  - cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-2 && yarn
+  - cd $TRAVIS_BUILD_DIR
 script:
   - yarn run travis-test
 
