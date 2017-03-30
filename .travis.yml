@@ -8,7 +8,7 @@ env:
 cache:
   yarn: true
 
-before_install: cd project
+before_install: cd $TRAVIS_BUILD_DIR
 install:
   - yarn
   - cd ./test/integration/env/webpack-1 && yarn
