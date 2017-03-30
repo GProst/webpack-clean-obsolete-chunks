@@ -13,7 +13,7 @@ install:
   - cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-1 && yarn
   - cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-2 && yarn
 script:
-  - mocha $SPECS_PATH
+  - npm run travis-test
 
 notifications:
   email:
