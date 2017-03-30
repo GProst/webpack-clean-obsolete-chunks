@@ -22,7 +22,7 @@
     "test-integration": "mocha \"test/integration/**/*.spec.js\" --timeout 15000",
     "coverage-unit": "istanbul cover _mocha -- \"test/unit/**/*.spec.js\"",
     "coverage-integration": "istanbul cover _mocha -- \"test/integration/**/*.spec.js\"",
-    "travis-test": "mocha $SPECS_PATH",
+    "travis-test": "mocha $SPECS_PATH --timeout 15000",
     "coveralls": "istanbul cover _mocha --report lcovonly -- \"test/unit/**/*.spec.js\" && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },
   "repository": {
