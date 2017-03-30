@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+  - "7"
+  - "6"
+env:
+  - SPECS_PATH="test/unit/**/*.spec.js"
+  - SPECS_PATH="test/integration/**/*.spec.js"
+cache:
+  yarn: true
+
+install:
+  - yarn
+  - cd ./test/integration/env/webpack-1 && yarn
+  - cd ./test/integration/env/webpack-2 && yarn
+script:
+  - mocha $SPECS_PATH
+
+notifications:
+  email:
+    - gprostmail@gmail.com
