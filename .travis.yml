@@ -8,12 +8,13 @@ env:
 cache:
   yarn: true
 
+before_install: cd project
 install:
   - yarn
-  - cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-1 && yarn
-  - cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-2 && yarn
+  - cd ./test/integration/env/webpack-1 && yarn
+  - cd ./test/integration/env/webpack-2 && yarn
 script:
-  - npm run travis-test
+  - yarn run travis-test
 
 notifications:
   email:
