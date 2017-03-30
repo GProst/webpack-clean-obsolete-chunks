@@ -1,0 +1,2 @@
+service_name: "travis-ci"
+service_job_id: <%= ENV['FOOVAR'] %>
