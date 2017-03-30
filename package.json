@@ -36,15 +36,9 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "clean-webpack-plugin": "^0.1.16",
     "coveralls": "^2.12.0",
-    "css-loader": "^0.27.3",
-    "extract-text-webpack-plugin": "^2.1.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
-    "sinon": "^2.1.0",
-    "style-loader": "^0.16.0",
-    "webpack": "^2.3.1",
-    "webpack-chunk-hash": "^0.4.0"
+    "sinon": "^2.1.0"
   }
 }

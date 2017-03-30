@@ -1,5 +1,5 @@
 const webpack2 = require('webpack');
-const CleanObsoleteChunks = require('./../../index');
+const CleanObsoleteChunks = require('./../../../../index');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackChunkHash = require('webpack-chunk-hash');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -10,8 +10,8 @@ module.exports = {
   target: 'web',
   context: __dirname,
   entry: {
-    'app': './test-entry-files/app/index.js',
-    'vendor': './test-entry-files/vendor/index.js'
+    'app': './../../test-entry-files/app/index.js',
+    'vendor': './../../test-entry-files/vendor/index.js'
   },
   cache: true,
   devtool: 'source-map',
@@ -40,7 +40,7 @@ module.exports = {
     new WebpackChunkHash(),
     
     new CleanWebpackPlugin(['test-output-files'], {
-      root: __dirname,
+      root: path.join(__dirname, '../../'),
       verbose: true,
       dry: false
     }),
@@ -49,7 +49,7 @@ module.exports = {
   ],
   
   output: {
-    path: path.join(__dirname, 'test-output-files'),
+    path: path.join(__dirname, '../../test-output-files'),
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js'
   }
