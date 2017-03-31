@@ -3,15 +3,17 @@ node_js:
   - "7"
   - "6"
 env:
-  - SPECS_PATH="test/unit/**/*.spec.js"
-  - SPECS_PATH="test/integration/**/*.spec.js"
+  - TEST_TYPE=unit
+  - TEST_TYPE=integration
 cache:
   yarn: true
 
 install:
   - yarn
-  - cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-1 && yarn
-  - cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-2 && yarn
+  - if [ $TEST_TYPE == integration ]; then cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-1 \
+    && yarn; fi
+  - if [ $TEST_TYPE == integration ]; then cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-2 \
+    && yarn; fi
   - cd $TRAVIS_BUILD_DIR
 script:
   - yarn run travis-test
