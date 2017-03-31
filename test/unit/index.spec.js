@@ -229,9 +229,9 @@ describe('CleanObsoleteChunks', () => {
           expect(del.sync.notCalled).to.be.true;
           inst._removeObsoleteFiles(compiler, compilation, done);
           expect(del.sync.callCount).to.be.equal(obsoleteFiles.length);
-          expect(del.sync.args[0][0]).to.be.equal(path.join(compiler.outputPath, obsoleteFiles[0]));
-          expect(del.sync.args[1][0]).to.be.equal(path.join(compiler.outputPath, obsoleteFiles[1]));
-          expect(del.sync.args[2][0]).to.be.equal(path.join(compiler.outputPath, obsoleteFiles[2]));
+          expect(del.sync.args[0]).to.be.deep.equal(
+            obsoleteFiles.filter(obsoleteFile => path.join(compiler.outputPath, obsoleteFile))
+          );
         });
         
         it(`SHOULD call done() callback at the end`, () => {
