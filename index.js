@@ -5,7 +5,7 @@ const path = require('path');
 
 module.exports = CleanObsoleteChunks;
 
-
+//FIXME
 function CleanObsoleteChunks() {
   this.chunkVersions = {};
 }
