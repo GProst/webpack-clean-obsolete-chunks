@@ -1,4 +1,9 @@
 
+0.1.5 / 2017-03-31
+==================
+  * added possibility to clean files outside cwd (fixes [#1](https://github.com/GProst/webpack-clean-obsolete-chunks/issues/1))
+  * added info about project development into README.md (badges)
+  
 0.1.4 / 2017-03-25
 ==================
 
