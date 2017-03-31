@@ -73,9 +73,9 @@ describe('CleanObsoleteChunks', () => {
             expect(_getChunkObsoleteFiles.notCalled).to.be.true;
             inst._getObsoleteFiles(compilation);
             expect(_getChunkObsoleteFiles.callCount).to.be.equal(3);
-            expect(_getChunkObsoleteFiles.args[0][0]).to.be.equal(compilation.chunks[0]);
-            expect(_getChunkObsoleteFiles.args[1][0]).to.be.equal(compilation.chunks[1]);
-            expect(_getChunkObsoleteFiles.args[2][0]).to.be.equal(compilation.chunks[2]);
+            _getChunkObsoleteFiles.args.forEach((args, index) => {
+              expect(args[0]).to.be.deep.equal(compilation.chunks[index]);
+            });
           });
         
         it(`SHOULD return concatenated array of obsolete files of all of the chunks (if any)`,
@@ -189,8 +189,7 @@ describe('CleanObsoleteChunks', () => {
             expect(compiler.plugin.args[0][0]).to.be.equal('after-emit');
             expect(compiler.plugin.args[0][1]).to.be.equal(inst._removeObsoleteFiles);
             expect(inst._removeObsoleteFiles.bind.called).to.be.true;
-            expect(inst._removeObsoleteFiles.bind.args[0][0]).to.be.equal(inst);
-            expect(inst._removeObsoleteFiles.bind.args[0][1]).to.be.equal(compiler);
+            expect(inst._removeObsoleteFiles.bind.args[0]).to.be.deep.equal([inst, compiler]);
           });
       });
     });
@@ -229,9 +228,9 @@ describe('CleanObsoleteChunks', () => {
           expect(del.sync.notCalled).to.be.true;
           inst._removeObsoleteFiles(compiler, compilation, done);
           expect(del.sync.callCount).to.be.equal(obsoleteFiles.length);
-          expect(del.sync.args[0][0]).to.be.equal(path.join(compiler.outputPath, obsoleteFiles[0]));
-          expect(del.sync.args[1][0]).to.be.equal(path.join(compiler.outputPath, obsoleteFiles[1]));
-          expect(del.sync.args[2][0]).to.be.equal(path.join(compiler.outputPath, obsoleteFiles[2]));
+          del.sync.args.forEach((args, index) => {
+            expect(args[0]).to.be.deep.equal(path.join(compiler.outputPath, obsoleteFiles[index]));
+          });
         });
         
         it(`SHOULD call done() callback at the end`, () => {
