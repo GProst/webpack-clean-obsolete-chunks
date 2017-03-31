@@ -5,7 +5,6 @@ const path = require('path');
 
 module.exports = CleanObsoleteChunks;
 
-//FIXME //just to test
 function CleanObsoleteChunks() {
   this.chunkVersions = {};
 }
@@ -19,7 +18,7 @@ CleanObsoleteChunks.prototype._removeObsoleteFiles = function(compiler, compilat
   let obsoleteFilesPaths = obsoleteFiles.map(fileName => path.join(compiler.outputPath, fileName));
   
   obsoleteFilesPaths.forEach((filePath) => {
-    del.sync(filePath);
+    del.sync(filePath, {force: true});
     console.info('old chunk file has been removed: ', filePath);
   });
   
