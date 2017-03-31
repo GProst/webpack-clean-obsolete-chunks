@@ -23,7 +23,7 @@
     "coverage-unit": "istanbul cover _mocha -- \"test/unit/**/*.spec.js\"",
     "coverage-integration": "istanbul cover _mocha -- \"test/integration/**/*.spec.js\"",
     "travis-test": "mocha \"test/$TEST_TYPE/**/*.spec.js\" --timeout 15000 && npm run coveralls",
-    "coveralls": "istanbul cover _mocha --report lcovonly -- \"test/unit/**/*.spec.js\" && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
+    "travis-coverage": "istanbul cover _mocha --report lcovonly -- \"test/unit/**/*.spec.js\" && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",

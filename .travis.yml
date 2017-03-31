@@ -16,7 +16,12 @@ install:
     && yarn; fi
   - cd $TRAVIS_BUILD_DIR
 script:
-  - yarn run travis-test
+  - if [ $TEST_TYPE == coverage ]; then yarn run travis-coverage; else yarn run travis-test; fi
+
+matrix:
+  include:
+  - node_js: "7"
+    env: TEST_TYPE=coverage
 
 notifications:
   email:
