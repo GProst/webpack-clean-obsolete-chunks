@@ -103,7 +103,7 @@ describe('CleanObsoleteChunks', () => {
           let compilation = {
             chunks: ['chunk1', 'chunk2', 'chunk3']
           };
-          let _getChunkObsoleteFiles = sinon.stub(inst, '_getChunkObsoleteFiles').returns([]);
+          sinon.stub(inst, '_getChunkObsoleteFiles').returns([]);
           expect(inst._getObsoleteFiles(compilation)).to.be.deep.equal([]);
         });
         
