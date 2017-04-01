@@ -1,9 +1,11 @@
 #Contributing
+
 From opening a bug report to creating a pull request: every contribution is appreciated and welcome. 
 Please be sure to read the contribution guidelines before making changes for a pull request.
 
 
 ##Installation
+  
   * Install [yarn](https://yarnpkg.com/en/docs/install)
 
   * In a project directory run:
@@ -12,6 +14,7 @@ Please be sure to read the contribution guidelines before making changes for a p
     ```
     
 ##Testing
+
 This project is test-driven, so keep in mind that every change and new feature should be covered 
 by tests where possible. We use 
 [Travis CI](https://travis-ci.org/GProst/webpack-clean-obsolete-chunks)
@@ -25,6 +28,7 @@ yarn test
 ```
 
 ##Code style
+
 We use [ESLint](http://eslint.org/) to keep consistent style. You probably want to install a plugin
 for your editor and use our **.eslintrc.js** configuration file.
 
@@ -35,4 +39,5 @@ service when you make a pull request. Your build will fail if it doesn't pass th
 code is OK, you may create a PR.
 
 ##Commit message style
+
 Please try to write [great commit messages](https://chris.beams.io/posts/git-commit/).
