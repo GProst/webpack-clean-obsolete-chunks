@@ -1,6 +1,6 @@
 {
   "name": "webpack-clean-obsolete-chunks",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A webpack plugin to remove obsolete chunk files in webpack watch mode",
   "author": "GProst a.k.a. German Prostakov <gprostmail@gmail.com>",
   "homepage": "https://github.com/GProst/webpack-clean-obsolete-chunks",
@@ -17,11 +17,12 @@
     "plugin"
   ],
   "scripts": {
+    "install-dev": "yarn && cd test/integration/env/webpack-1 && yarn && cd ../webpack-2 && yarn",
+    "test": "npm run test-unit && npm run test-integration",
     "test-unit": "mocha \"test/unit/**/*.spec.js\"",
     "test-unit-watch": "mocha \"test/unit/**/*.spec.js\" --watch",
     "test-integration": "mocha \"test/integration/**/*.spec.js\" --timeout 15000",
-    "coverage-unit": "istanbul cover _mocha -- \"test/unit/**/*.spec.js\"",
-    "coverage-integration": "istanbul cover _mocha -- \"test/integration/**/*.spec.js\"",
+    "coverage": "istanbul cover _mocha -- \"test/unit/**/*.spec.js\"",
     "travis-test": "mocha \"test/$TEST_TYPE/**/*.spec.js\" --timeout 15000",
     "travis-coverage": "istanbul cover _mocha --report lcovonly -- \"test/unit/**/*.spec.js\" && cat ./coverage/lcov.info | coveralls"
   },
