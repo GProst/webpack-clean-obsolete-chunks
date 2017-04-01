@@ -1,7 +1,7 @@
 "use strict";
 
-const del = require('del');
-const path = require('path');
+const del = require("del");
+const path = require("path");
 
 module.exports = CleanObsoleteChunks;
 
@@ -10,7 +10,7 @@ function CleanObsoleteChunks() {
 }
 
 CleanObsoleteChunks.prototype.apply = function(compiler) {
-  compiler.plugin('after-emit', this._removeObsoleteFiles.bind(this, compiler));
+  compiler.plugin("after-emit", this._removeObsoleteFiles.bind(this, compiler));
 };
 
 CleanObsoleteChunks.prototype._removeObsoleteFiles = function(compiler, compilation, done) {
@@ -19,7 +19,7 @@ CleanObsoleteChunks.prototype._removeObsoleteFiles = function(compiler, compilat
   
   obsoleteFilesPaths.forEach((filePath) => {
     del.sync(filePath, {force: true});
-    console.info('old chunk file has been removed: ', filePath);
+    console.info("old chunk file has been removed: ", filePath);
   });
   
   done();
@@ -47,7 +47,7 @@ CleanObsoleteChunks.prototype._getChunkObsoleteFiles = function(chunk) {
   let oldVersionChunk = this.chunkVersions[chunk.name];
   
   //we don't consider chunks at the first compilation, just save configs
-  if (typeof oldVersionChunk === 'undefined') {
+  if (typeof oldVersionChunk === "undefined") {
     this._saveChunkConfig(chunk);
     return chunkObsoleteFiles;
   }

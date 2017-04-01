@@ -9,7 +9,7 @@ engines:
   eslint:
     enabled: true
     config:
-      ignore_warnings: true
+      ignore_warnings: false
   fixme:
     enabled: true
     config:
