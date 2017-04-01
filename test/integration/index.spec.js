@@ -1,33 +1,35 @@
-const expect = require('chai').expect;
-const path = require('path');
-const fs = require('fs');
-const del = require('del');
-const webpack1 = require('./env/webpack-1/node_modules/webpack');
-const webpack2 = require('./env/webpack-2/node_modules/webpack');
+"use strict";
 
-describe('webpack-clean-obsolete-chunks plugin', () => {
-  let fileToChange = path.join(__dirname, 'test-entry-files/app/partB.js');
-  let changedFileInitialContent = fs.readFileSync(fileToChange, 'utf-8');
+const expect = require("chai").expect;
+const path = require("path");
+const fs = require("fs");
+const del = require("del");
+const webpack1 = require("./env/webpack-1/node_modules/webpack");
+const webpack2 = require("./env/webpack-2/node_modules/webpack");
+
+describe("webpack-clean-obsolete-chunks plugin", () => {
+  let fileToChange = path.join(__dirname, "test-entry-files/app/partB.js");
+  let changedFileInitialContent = fs.readFileSync(fileToChange, "utf-8");
   afterEach(() => {
     //restore initial file content
     fs.writeFileSync(fileToChange, changedFileInitialContent);
   });
   
-  describe('in webpack2 watch mode', () => {
-    let getConfig = require('./env/webpack-2/webpack.config.js');
-    let outsideOutputDirectory = path.join(process.cwd(), '../test-output-files');
+  describe("in webpack2 watch mode", () => {
+    let getConfig = require("./env/webpack-2/webpack.config.js");
+    let outsideOutputDirectory = path.join(process.cwd(), "../test-output-files");
     
     afterEach(() => {
       //removing created directory after tests
-      del.sync(outsideOutputDirectory + '/**', {force: true});
+      del.sync(outsideOutputDirectory + "/**", {force: true});
     });
     
-    it(`SHOULD remove all obsolete (only) files`, (done) => {
+    it("SHOULD remove all obsolete (only) files", (done) => {
       let config = getConfig();
       startWebpack2(config, fileToChange, done);
     });
     
-    it(`SHOULD be able to remove files in the outside of the working directory`, (done) => {
+    it("SHOULD be able to remove files in the outside of the working directory", (done) => {
       let config = getConfig();
       config.output.path = outsideOutputDirectory;
       startWebpack2(config, fileToChange, done);
@@ -36,10 +38,10 @@ describe('webpack-clean-obsolete-chunks plugin', () => {
   });
   
   
-  describe('in webpack1 watch mode', () => {
-    const getConfig = require('./env/webpack-1/webpack.config.js');
+  describe("in webpack1 watch mode", () => {
+    const getConfig = require("./env/webpack-1/webpack.config.js");
     
-    it(`SHOULD remove all obsolete (only) files`, (done) => {
+    it("SHOULD remove all obsolete (only) files", (done) => {
       let config = getConfig();
       const compiler = webpack1(config);
       let firstCompilation = true;
@@ -54,9 +56,9 @@ describe('webpack-clean-obsolete-chunks plugin', () => {
         
         if (firstCompilation) {
           oldFiles = fs.readdirSync(config.output.path);
-          //sometimes webpack1 doesn't see these changes, so we need to wait a little
+          //sometimes webpack1 doesn"t see these changes, so we need to wait a little
           setTimeout(() => {
-            fs.writeFileSync(fileToChange, 'testString');
+            fs.writeFileSync(fileToChange, "testString");
           }, 1000);
           firstCompilation = false;
         } else {
@@ -76,9 +78,9 @@ describe('webpack-clean-obsolete-chunks plugin', () => {
       });
     });
     
-    it(`SHOULD be able to remove files in the outside of the working directory`, () => {
-      //it's hard to test webpack 1 since this callback sometimes calls before compiler
-      // 'after-emit' event... and my plugin does
+    it("SHOULD be able to remove files in the outside of the working directory", () => {
+      //it"s hard to test webpack 1 since this callback sometimes calls before compiler
+      // "after-emit" event... and my plugin does
     });
     
   });
@@ -102,7 +104,7 @@ function startWebpack2(config, fileToChange, done) {
     if (firstCompilation) {
       oldFiles = fs.readdirSync(config.output.path);
       //following should only change app.*.js and app.*.js.map
-      fs.writeFileSync(fileToChange, 'testString');
+      fs.writeFileSync(fileToChange, "testString");
       firstCompilation = false;
     } else {
       newFiles = fs.readdirSync(config.output.path);
@@ -135,6 +137,6 @@ function handleErrors(err, stats) {
   }
   
   if (stats.hasWarnings()) {
-    console.warn(info.warnings)
+    console.warn(info.warnings);
   }
 }
