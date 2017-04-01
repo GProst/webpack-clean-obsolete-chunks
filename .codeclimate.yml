@@ -8,8 +8,6 @@ engines:
       - javascript
   eslint:
     enabled: true
-    config:
-      ignore_warnings: false
   fixme:
     enabled: true
     config:
