@@ -8,6 +8,8 @@ engines:
       - javascript
   eslint:
     enabled: true
+  markdownlint:
+      enabled: true
   fixme:
     enabled: true
     config:
@@ -18,5 +20,9 @@ engines:
 ratings:
   paths:
   - "**.js"
+  - "**.md"
 exclude_paths:
 - "**/node_modules"
+- "**/.git"
+- "**/.idea"
+- "**/test-output-files"

@@ -1,4 +1,5 @@
 # webpack-clean-obsolete-chunks
+
 [![npm version](https://badge.fury.io/js/webpack-clean-obsolete-chunks.svg)](https://badge.fury.io/js/webpack-clean-obsolete-chunks)
 [![Coverage Status](https://coveralls.io/repos/github/GProst/webpack-clean-obsolete-chunks/badge.svg?branch=master)](https://coveralls.io/github/GProst/webpack-clean-obsolete-chunks?branch=master)
 [![Build Status](https://travis-ci.org/GProst/webpack-clean-obsolete-chunks.svg?branch=master)](https://travis-ci.org/GProst/webpack-clean-obsolete-chunks)
@@ -6,7 +7,7 @@
 [![devDependencies](https://david-dm.org/gprost/webpack-clean-obsolete-chunks/dev-status.svg)](https://david-dm.org/gprost/webpack-clean-obsolete-chunks?type=dev)
 [![Code Climate](https://codeclimate.com/github/GProst/webpack-clean-obsolete-chunks/badges/gpa.svg)](https://codeclimate.com/github/GProst/webpack-clean-obsolete-chunks)
 
-A webpack plugin to remove obsolete chunk files in webpack watch mode. 
+A webpack plugin to remove obsolete chunk files in webpack watch mode.
 Especially useful when use hashes in output file names.
 
 ## Installation
@@ -34,20 +35,19 @@ module.exports = {
 
 ## How it works
 
-Plugin searches for all updated chunks and deletes obsolete files in output directory after each 
-webpack compilation.
+Plugin searches for all updated chunks and deletes obsolete files in output
+directory after each webpack compilation.
 
-
-# Contribution
+## Contribution
 
 You're free to contribute to this project by submitting
-[issues](https://github.com/GProst/webpack-clean-obsolete-chunks/issues) and/or 
-[pull requests](https://github.com/GProst/webpack-clean-obsolete-chunks/pulls). 
-Please be sure to read the 
+[issues](https://github.com/GProst/webpack-clean-obsolete-chunks/issues) and/or
+[pull requests](https://github.com/GProst/webpack-clean-obsolete-chunks/pulls).
+Please be sure to read the
 [contribution guidelines](https://github.com/GProst/webpack-clean-obsolete-chunks/blob/master/CONTRIBUTING.md)
 before making changes for a pull request.
 
-# License
+## License
 
-This project is licensed under 
+This project is licensed under
 [MIT](https://github.com/GProst/webpack-clean-obsolete-chunks/blob/master/LICENSE).
