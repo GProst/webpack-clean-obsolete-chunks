@@ -1,10 +1,10 @@
-#Contributing
+# Contributing
 
 From opening a bug report to creating a pull request: every contribution is appreciated and welcome. 
 Please be sure to read the contribution guidelines before making changes for a pull request.
 
 
-##Installation
+## Installation
   
   * Install [yarn](https://yarnpkg.com/en/docs/install)
 
@@ -13,7 +13,7 @@ Please be sure to read the contribution guidelines before making changes for a p
     yarn run install-dev
     ```
     
-##Testing
+## Testing
 
 This project is test-driven, so keep in mind that every change and new feature should be covered 
 by tests where possible. We use 
@@ -27,7 +27,7 @@ To run the entire test suite use:
 yarn test
 ```
 
-##Code style
+## Code style
 
 We use [ESLint](http://eslint.org/) to keep consistent style. You probably want to install a plugin
 for your editor and use our **.eslintrc.js** configuration file.
@@ -38,6 +38,6 @@ service when you make a pull request. Your build will fail if it doesn't pass th
 >**Note:** some ESlint `warnings` (or even `errors`) may be false-positive, so if you're sure your
 code is OK, you may create a PR.
 
-##Commit message style
+## Commit message style
 
 Please try to write [great commit messages](https://chris.beams.io/posts/git-commit/).
