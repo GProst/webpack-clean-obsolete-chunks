@@ -43,9 +43,9 @@ webpack compilation.
 You're free to contribute to this project by submitting
 [issues](https://github.com/GProst/webpack-clean-obsolete-chunks/issues) and/or 
 [pull requests](https://github.com/GProst/webpack-clean-obsolete-chunks/pulls). 
-This project is test-driven, so keep in mind that every change and new feature should be covered 
-by tests.
-
+Please be sure to read the 
+[contribution guidelines](https://github.com/GProst/webpack-clean-obsolete-chunks/blob/master/CONTRIBUTING.md)
+before making changes for a pull request.
 
 # License
 
