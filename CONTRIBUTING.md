@@ -43,8 +43,8 @@ The ESLint test will be run via
 service when you make a pull request. Your build will fail if it doesn't pass
 the style check.
 
->**Note:** some ESlint `warnings` (or even `errors`) may be false-positive, so
-if you're sure your code is OK, you may create a PR.
+>**Note:** some ESlint `warnings` may be false-positive, so if you're sure your 
+code is OK, you may create a PR.
 
 You can also install
 [CodeClimate CLI](https://github.com/codeclimate/codeclimate)
