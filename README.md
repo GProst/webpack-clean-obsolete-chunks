@@ -2,6 +2,8 @@
 [![npm version](https://badge.fury.io/js/webpack-clean-obsolete-chunks.svg)](https://badge.fury.io/js/webpack-clean-obsolete-chunks)
 [![Coverage Status](https://coveralls.io/repos/github/GProst/webpack-clean-obsolete-chunks/badge.svg?branch=master)](https://coveralls.io/github/GProst/webpack-clean-obsolete-chunks?branch=master)
 [![Build Status](https://travis-ci.org/GProst/webpack-clean-obsolete-chunks.svg?branch=master)](https://travis-ci.org/GProst/webpack-clean-obsolete-chunks)
+[![dependencies](https://david-dm.org/gprost/webpack-clean-obsolete-chunks.svg)](https://david-dm.org/gprost/webpack-clean-obsolete-chunks)
+[![devDependencies](https://david-dm.org/gprost/webpack-clean-obsolete-chunks/dev-status.svg)](https://david-dm.org/gprost/webpack-clean-obsolete-chunks?type=dev)
 [![Code Climate](https://codeclimate.com/github/GProst/webpack-clean-obsolete-chunks/badges/gpa.svg)](https://codeclimate.com/github/GProst/webpack-clean-obsolete-chunks)
 
 A webpack plugin to remove obsolete chunk files in webpack watch mode. 
