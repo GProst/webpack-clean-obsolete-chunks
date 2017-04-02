@@ -1,5 +1,16 @@
+# from .gitignore:
 .idea
 node_modules
 coverage
-test/*
+npm-debug.log*
+test/integration/test-output-files
 .coveralls.yml
+
+
+# additional:
+test
+.codeclimate.yml
+.eslintrc.js
+CONTRIBUTING.md
+.travis.yml
+yarn.lock
