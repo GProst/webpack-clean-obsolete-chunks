@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.7 / 2017-04-02
+
+* remove redundant files from npm package
+
 ## 0.1.6 / 2017-04-01
 
 * update README.md
