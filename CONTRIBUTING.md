@@ -32,6 +32,12 @@ To run the entire test suite use:
 yarn test
 ```
 
+To check tests coverage use:
+
+```sh
+yarn run coverage
+```
+
 ## Code style
 
 We use [ESLint](http://eslint.org/) to keep consistent style. You probably want
