@@ -37,7 +37,6 @@ CleanObsoleteChunks.prototype._getObsoleteFiles = function(compilation) {
 
 CleanObsoleteChunks.prototype._saveChunkConfig = function(chunk) {
   this.chunkVersions[chunk.name] = {
-    hash: chunk.hash,
     files: chunk.files
   };
 };
@@ -52,13 +51,10 @@ CleanObsoleteChunks.prototype._getChunkObsoleteFiles = function(chunk) {
     return chunkObsoleteFiles;
   }
   
-  //if chunk has been changed since last compilation
-  if (chunk.hash !== oldVersionChunk.hash) {
-    //searching for the actual files which has been changed in this chunk
-    chunkObsoleteFiles = oldVersionChunk.files.filter(
-      oldChunkFile => chunk.files.indexOf(oldChunkFile) === -1
-    );
-  }
+  //searching for the actual files which has been changed in this chunk
+  chunkObsoleteFiles = oldVersionChunk.files.filter(
+    oldChunkFile => chunk.files.indexOf(oldChunkFile) === -1
+  );
   
   this._saveChunkConfig(chunk);
   return chunkObsoleteFiles;

@@ -34,20 +34,6 @@ describe("CleanObsoleteChunks", () => {
         });
         
         it(
-          "SHOULD set its deep chunkVersions[chunk.name]['hash'] property with chunk.hash value",
-          () => {
-            let testHash = "7df8ue0ucsd0asdwd20";
-            let chunk = {
-              name: "test",
-              files: ["test"],
-              hash: testHash
-            };
-            inst._saveChunkConfig(chunk);
-            expect(inst.chunkVersions[chunk.name]["hash"]).to.be.equal(testHash);
-          }
-        );
-        
-        it(
           "SHOULD set its deep chunkVersions[chunk.name]['files'] property with chunk.files value",
           () => {
             let files = ["file1", "file2", "file3"];
@@ -122,28 +108,15 @@ describe("CleanObsoleteChunks", () => {
           expect(inst._getChunkObsoleteFiles(chunk)).to.be.deep.equal([]);
         });
         
-        it("SHOULD return empty array if chunk hasn't been changed", () => {
+        it("SHOULD return only obsolete files", () => {
           let oldChunk = {
             name: "test",
-            hash: "abcde"
-          };
-          inst.chunkVersions[oldChunk.name] = oldChunk;
-          let newChunk = Object.assign({}, oldChunk);
-          expect(inst._getChunkObsoleteFiles(newChunk)).to.be.deep.equal([]);
-        });
-        
-        it("SHOULD return only obsolete files if chunk has been changed", () => {
-          let oldChunk = {
-            name: "test",
-            hash: "hash1",
             files: ["file1(old-name)", "file2(old-name)", "file3(old-name)"]
           };
           inst.chunkVersions[oldChunk.name] = {
-            hash: oldChunk.hash,
             files: oldChunk.files
           };
           let newChunk = Object.assign(oldChunk, {
-            hash: "hash2",
             files: ["file1(old-name)", "file2(old-name)", "file3(new-name)"]
           });
           expect(inst._getChunkObsoleteFiles(newChunk)).to.be.deep.equal(["file3(old-name)"]);
@@ -153,7 +126,7 @@ describe("CleanObsoleteChunks", () => {
           () => {
             let chunk = {
               name: "test",
-              hash: "abcde"
+              files: ["file1", "file2"]
             };
             let _saveChunkConfig = sinon.stub(inst, "_saveChunkConfig");
             
@@ -165,7 +138,7 @@ describe("CleanObsoleteChunks", () => {
             _saveChunkConfig.reset();
             
             // 2) otherwise
-            inst.chunkVersions[chunk.name] = chunk;
+            inst.chunkVersions[chunk.name] = {files: chunk.files};
             expect(_saveChunkConfig.called).to.be.false;
             inst._getChunkObsoleteFiles(chunk);
             expect(_saveChunkConfig.callCount).to.be.equal(1);

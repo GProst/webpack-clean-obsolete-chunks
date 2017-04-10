@@ -12,6 +12,14 @@ Especially useful when use hashes in output file names.
 
 ## Installation
 
+Via [yarn](https://yarnpkg.com/lang/en/):
+
+```
+yarn add webpack-clean-obsolete-chunks --dev
+```
+
+or via [npm](https://github.com/npm/npm):
+
 ```
 npm install webpack-clean-obsolete-chunks --save-dev
 ```

@@ -8,8 +8,14 @@ const webpack1 = require("./env/webpack-1/node_modules/webpack");
 const webpack2 = require("./env/webpack-2/node_modules/webpack");
 
 describe("webpack-clean-obsolete-chunks plugin", () => {
-  let fileToChange = path.join(__dirname, "test-entry-files/app/partB.js");
-  let changedFileInitialContent = fs.readFileSync(fileToChange, "utf-8");
+  let fileToChange; //the file we are going to change
+  let changedFileInitialContent; //initial content of the file we are going to change
+  
+  beforeEach(() => {
+    fileToChange = path.join(__dirname, "test-entry-files/app/partB.js");
+    changedFileInitialContent = fs.readFileSync(fileToChange, "utf-8");
+  });
+  
   afterEach(() => {
     //restore initial file content
     fs.writeFileSync(fileToChange, changedFileInitialContent);
@@ -18,21 +24,39 @@ describe("webpack-clean-obsolete-chunks plugin", () => {
   describe("in webpack2 watch mode", () => {
     let getConfig = require("./env/webpack-2/webpack.config.js");
     let outsideOutputDirectory = path.join(process.cwd(), "../test-output-files");
+    let config;
+    
+    let newContent; //new content in file we are going to change
+    let obsoleteFilesMatch; //RegExp that SHOULD match obsolete file names
+    
+    beforeEach(() => {
+      newContent = "var a = 'a';";
+      obsoleteFilesMatch = /app.*.js.*/;
+    });
     
     afterEach(() => {
       //removing created directory after tests
       del.sync(outsideOutputDirectory + "/**", {force: true});
     });
     
-    it("SHOULD remove all obsolete (only) files", (done) => {
-      let config = getConfig();
-      startWebpack2(config, fileToChange, done);
+    it("SHOULD remove all obsolete js files and its maps", (done) => {
+      config = getConfig();
+      startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, done);
     });
     
     it("SHOULD be able to remove files in the outside of the working directory", (done) => {
-      let config = getConfig();
+      config = getConfig();
       config.output.path = outsideOutputDirectory;
-      startWebpack2(config, fileToChange, done);
+      startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, done);
+    });
+    
+    it("SHOULD remove obsolete css files and its maps", (done) => {
+      config = getConfig();
+      fileToChange = path.join(__dirname, "test-entry-files/app/styles/stylesA.css");
+      changedFileInitialContent = fs.readFileSync(fileToChange, "utf-8");
+      newContent = "body {background: red;}";
+      obsoleteFilesMatch = /styles.*.css.*/;
+      startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, done);
     });
     
   });
@@ -89,7 +113,7 @@ describe("webpack-clean-obsolete-chunks plugin", () => {
 });
 
 
-function startWebpack2(config, fileToChange, done) {
+function startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, done) {
   const compiler = webpack2(config);
   let firstCompilation = true;
   let oldFiles;
@@ -103,15 +127,14 @@ function startWebpack2(config, fileToChange, done) {
     
     if (firstCompilation) {
       oldFiles = fs.readdirSync(config.output.path);
-      //following should only change app.*.js and app.*.js.map
-      fs.writeFileSync(fileToChange, "testString");
+      fs.writeFileSync(fileToChange, newContent);
       firstCompilation = false;
     } else {
       newFiles = fs.readdirSync(config.output.path);
       let changedFiles = oldFiles.filter(oldFile => newFiles.indexOf(oldFile) === -1);
       expect(changedFiles).to.have.length.above(0);
       changedFiles.forEach(changedFile => {
-        expect(changedFile).to.match(/app.*.js.*/);
+        expect(changedFile).to.match(obsoleteFilesMatch);
       });
       watching.close(() => {
         done();
