@@ -4,7 +4,13 @@ module.exports = {
     "commonjs": true,
     "node": true,
     "es6": true,
-    "mocha": true
+    "mocha": true,
+    "browser": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "script",
+    "allowImportExportEverywhere": true
   },
   "extends": ["eslint:recommended"],
   "rules": {
