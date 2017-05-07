@@ -2,7 +2,7 @@ engines:
   duplication:
     enabled: true
     exclude_paths:
-    - "**/env/**/webpack.config.js"
+    - "**/env/**"
     config:
       languages:
       - javascript

@@ -18,32 +18,33 @@ describe("CleanObsoleteChunks", () => {
     describe("method _saveChunkConfig(chunk)", () => {
       describe("in order to save chunks versions", () => {
         it("SHOULD add or update its deep chunkVersions[chunk.name] property", () => {
-          let chunkName = "testChunkName";
-          expect(inst.chunkVersions).to.not.have.property(chunkName);
+          let chunkId = 1;
+          expect(inst.chunkVersions.get(chunkId)).to.be.equal(undefined);
           let chunk = {
-            name: chunkName,
+            id: chunkId,
             files: ["test-file-name1"],
             hash: "hash1"
           };
           inst._saveChunkConfig(chunk);
-          expect(inst.chunkVersions).to.have.property(chunk.name);
-          let oldValue = inst.chunkVersions[chunk.name];
+          let oldValue = inst.chunkVersions.get(chunkId);
+          expect(oldValue).to.not.be.equal(undefined);
           let updatedChunk = Object.assign(chunk, {files: ["test-file-name2"], hash: "hash2"});
           inst._saveChunkConfig(updatedChunk);
-          expect(oldValue).to.not.be.equal(inst.chunkVersions[updatedChunk.name]);
+          expect(oldValue).to.not.be.equal(inst.chunkVersions.get(chunkId));
         });
         
         it(
           "SHOULD set its deep chunkVersions[chunk.name]['files'] property with chunk.files value",
           () => {
             let files = ["file1", "file2", "file3"];
+            let chunkId = 1;
             let chunk = {
-              name: "test",
+              id: chunkId,
               files: files,
               hash: "hash"
             };
             inst._saveChunkConfig(chunk);
-            expect(inst.chunkVersions[chunk.name]["files"]).to.be.equal(files);
+            expect(inst.chunkVersions.get(chunkId)["files"]).to.be.equal(files);
           }
         );
       });
@@ -103,19 +104,20 @@ describe("CleanObsoleteChunks", () => {
       describe("in order to get obsolete chunk files", () => {
         it("SHOULD return empty array if there is no chunkVersions[chunk.name]", () => {
           let chunk = {
-            name: "test"
+            id: 1
           };
           expect(inst._getChunkObsoleteFiles(chunk)).to.be.deep.equal([]);
         });
         
         it("SHOULD return only obsolete files", () => {
+          const chunkId = 1;
           let oldChunk = {
-            name: "test",
+            id: chunkId,
             files: ["file1(old-name)", "file2(old-name)", "file3(old-name)"]
           };
-          inst.chunkVersions[oldChunk.name] = {
+          inst.chunkVersions.set(chunkId, {
             files: oldChunk.files
-          };
+          });
           let newChunk = Object.assign(oldChunk, {
             files: ["file1(old-name)", "file2(old-name)", "file3(new-name)"]
           });

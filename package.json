@@ -21,9 +21,10 @@
     "test": "npm run test-unit && npm run test-integration",
     "test-unit": "mocha \"test/unit/**/*.spec.js\"",
     "test-unit-watch": "mocha \"test/unit/**/*.spec.js\" --watch",
-    "test-integration": "mocha \"test/integration/**/*.spec.js\" --timeout 15000",
+    "test-integration": "npm run test-webpack1 && npm run test-webpack2",
+    "test-webpack1": "mocha \"test/integration/**/webpack-1/*.spec.js\" --timeout 15000",
+    "test-webpack2": "mocha \"test/integration/**/webpack-2/**/*.spec.js\" --timeout 15000",
     "coverage": "istanbul cover _mocha -- \"test/unit/**/*.spec.js\"",
-    "travis-test": "mocha \"test/$TEST_TYPE/**/*.spec.js\" --timeout 15000",
     "travis-coverage": "istanbul cover _mocha --report lcovonly -- \"test/unit/**/*.spec.js\" && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
@@ -37,6 +38,7 @@
     "del": "^2.2.2"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
     "chai": "^3.5.0",
     "coveralls": "^2.12.0",
     "eslint": "^3.18.0",
