@@ -6,7 +6,7 @@ const path = require("path");
 module.exports = CleanObsoleteChunks;
 
 function CleanObsoleteChunks() {
-  this.chunkVersions = {};
+  this.chunkVersions = new Map();
 }
 
 CleanObsoleteChunks.prototype.apply = function(compiler) {
@@ -36,14 +36,14 @@ CleanObsoleteChunks.prototype._getObsoleteFiles = function(compilation) {
 };
 
 CleanObsoleteChunks.prototype._saveChunkConfig = function(chunk) {
-  this.chunkVersions[chunk.name] = {
+  this.chunkVersions.set(chunk.id, {
     files: chunk.files
-  };
+  });
 };
 
 CleanObsoleteChunks.prototype._getChunkObsoleteFiles = function(chunk) {
   let chunkObsoleteFiles = [];
-  let oldVersionChunk = this.chunkVersions[chunk.name];
+  let oldVersionChunk = this.chunkVersions.get(chunk.id);
   
   //we don't consider chunks at the first compilation, just save configs
   if (typeof oldVersionChunk === "undefined") {
