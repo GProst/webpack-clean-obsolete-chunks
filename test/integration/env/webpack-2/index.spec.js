@@ -81,7 +81,7 @@ function startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, don
       });
       watching.close(() => {
         done();
-        console.log("Watching webpack2 Ended.");
+        console.log("Watching webpack2 Ended."); //eslint-disable-line
       });
     }
   });

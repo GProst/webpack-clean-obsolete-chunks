@@ -18,7 +18,7 @@ install:
 script:
   - if [ $TEST_TYPE == coverage ]; then yarn run travis-coverage; \
       else if [ $TEST_TYPE == unit ]; then yarn run test-unit; \
-        else yarn run test-integration; fi
+        else yarn run test-integration; fi; fi
 
 matrix:
   include:

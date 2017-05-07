@@ -52,7 +52,7 @@ describe("webpack-clean-obsolete-chunks plugin", () => {
               expect(changedFile).to.match(/app.*.js.*/);
             });
             watching.close(() => {
-              console.log("Watching webpack1 Ended.");
+              console.log("Watching webpack1 Ended."); //eslint-disable-line
             });
             done();
           }
