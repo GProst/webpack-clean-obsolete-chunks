@@ -1,5 +1,5 @@
-"use strict";
+'use strict'
 
-require("./libA");
-require("./libB");
-require("./libC");
+require('./libA')
+require('./libB')
+require('./libC')

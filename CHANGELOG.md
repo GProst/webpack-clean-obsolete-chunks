@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.10 / 2017-06-17
+
+* Update dependencies
+
 ## 0.1.9 / 2017-05-07
 
 * Fix bug with async code-splitting (fixes[#12](https://github.com/GProst/webpack-clean-obsolete-chunks/issues/12))

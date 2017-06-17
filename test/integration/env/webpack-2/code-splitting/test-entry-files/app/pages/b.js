@@ -1,6 +1,6 @@
-"use strict";
+'use strict'
 
-require("./a");
-require("./c");
+require('./a')
+require('./c')
 
-console.info("page B has been loaded successfully!"); //eslint-disable-line
+console.info('page B has been loaded successfully!') //eslint-disable-line no-console

@@ -1,21 +1,21 @@
-"use strict";
+'use strict'
 
-const webpack = require("webpack");
-const CleanObsoleteChunks = require("./../../../../../index");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const path = require("path");
+const webpack = require('webpack')
+const CleanObsoleteChunks = require('./../../../../../index')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const path = require('path')
 
 module.exports = {
-  target: "web",
+  target: 'web',
   context: __dirname,
   entry: {
-    "app": "./test-entry-files/app/app.js",
+    'app': './test-entry-files/app/app.js',
   },
   cache: true,
-  devtool: "source-map",
+  devtool: 'source-map',
 
   plugins: [
-    new CleanWebpackPlugin(["dist"], {
+    new CleanWebpackPlugin(['dist'], {
       root: __dirname,
       verbose: true,
       dry: false
@@ -24,13 +24,13 @@ module.exports = {
     new CleanObsoleteChunks(),
 
     new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor"
+      name: 'vendor'
     }),
   ],
 
   output: {
-    path: path.join(__dirname, "test-output-files"),
-    filename: "[name].[chunkhash].js",
-    chunkFilename: "[name].[chunkhash].js"
+    path: path.join(__dirname, 'test-output-files'),
+    filename: '[name].[chunkhash].js',
+    chunkFilename: '[name].[chunkhash].js'
   }
-};
+}

@@ -4,10 +4,8 @@ module.exports = {
     "commonjs": true,
     "node": true,
     "es6": true,
-    "mocha": true,
-    "browser": true
+    "mocha": true
   },
-  "parser": "babel-eslint",
   "parserOptions": {
     "sourceType": "script",
     "allowImportExportEverywhere": true
@@ -15,10 +13,10 @@ module.exports = {
   "extends": ["eslint:recommended"],
   "rules": {
     "no-console": ["warn", {"allow": ["warn", "error"]}],
-    "semi": "error",
+    "semi": ["error", "never"],
     "strict": ["error", "global"],
     "no-trailing-spaces": ["error", {"skipBlankLines": true}],
-    "quotes": ["error", "double"],
+    "quotes": ["error", "single"],
     "no-template-curly-in-string": "error",
     "no-caller": "error",
     "yoda": "error",
