@@ -1,3 +1,3 @@
-"use strict";
+'use strict'
 
-console.info("page C has been loaded successfully!"); //eslint-disable-line
+console.info('page C has been loaded successfully!') //eslint-disable-line no-console
