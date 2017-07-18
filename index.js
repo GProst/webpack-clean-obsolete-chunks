@@ -5,8 +5,14 @@ const path = require('path')
 
 module.exports = CleanObsoleteChunks
 
-function CleanObsoleteChunks() {
+function CleanObsoleteChunks(options) {
   this.chunkVersions = new Map()
+  this._setOptions(options)
+}
+
+CleanObsoleteChunks.prototype._setOptions = function({verbose = true} = {}) {
+  this.options = {}
+  this.options.verbose = verbose
 }
 
 CleanObsoleteChunks.prototype.apply = function(compiler) {
@@ -19,7 +25,7 @@ CleanObsoleteChunks.prototype._removeObsoleteFiles = function(compiler, compilat
   
   obsoleteFilesPaths.forEach((filePath) => {
     del.sync(filePath, {force: true})
-    console.info('Old chunk file has been removed: ', filePath) // eslint-disable-line no-console
+    this._consoleInfo('Old chunk file has been removed: ', filePath)
   })
   
   done()
@@ -58,4 +64,8 @@ CleanObsoleteChunks.prototype._getChunkObsoleteFiles = function(chunk) {
   
   this._saveChunkConfig(chunk)
   return chunkObsoleteFiles
+}
+
+CleanObsoleteChunks.prototype._consoleInfo = function(...args) {
+  this.options.verbose && console.info(...args) // eslint-disable-line no-console
 }

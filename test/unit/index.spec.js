@@ -217,6 +217,45 @@ describe('CleanObsoleteChunks', () => {
         })
       })
     })
+
+    describe('method _setOptions()', () => {
+      describe('in order to set default options correctly', () => {
+        beforeEach(() => {
+          inst._setOptions() // no options provided
+        })
+        it(
+          'SHOULD set verbose option to true',
+          () => {
+            expect(inst.options.verbose).to.be.true
+          })
+      })
+
+      describe('in order to act correctly with verbose option', () => {
+        beforeEach(() => {
+          sinon.stub(console, 'info') // no options provided
+        })
+        afterEach(() => {
+          console.info.restore() // eslint-disable-line no-console
+        })
+
+        it(
+          'SHOULD call console.info if verbose option === true',
+          () => {
+            inst._setOptions({verbose: true})
+            expect(console.info.notCalled).to.be.true // eslint-disable-line no-console
+            inst._consoleInfo('test')
+            expect(console.info.callCount).to.be.equal(1) // eslint-disable-line no-console
+          })
+
+        it(
+          'SHOULD NOT call console.info if verbose option === false',
+          () => {
+            inst._setOptions({verbose: false})
+            inst._consoleInfo('test')
+            expect(console.info.notCalled).to.be.true // eslint-disable-line no-console
+          })
+      })
+    })
     
   })
 })
