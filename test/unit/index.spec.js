@@ -235,16 +235,16 @@ describe('CleanObsoleteChunks', () => {
           sinon.stub(console, 'info') // no options provided
         })
         afterEach(() => {
-          console.info.restore()
+          console.info.restore() // eslint-disable-line no-console
         })
 
         it(
           'SHOULD call console.info if verbose option === true',
           () => {
             inst._setOptions({verbose: true})
-            expect(console.info.notCalled).to.be.true
+            expect(console.info.notCalled).to.be.true // eslint-disable-line no-console
             inst._consoleInfo('test')
-            expect(console.info.callCount).to.be.equal(1)
+            expect(console.info.callCount).to.be.equal(1) // eslint-disable-line no-console
           })
 
         it(
@@ -252,7 +252,7 @@ describe('CleanObsoleteChunks', () => {
           () => {
             inst._setOptions({verbose: false})
             inst._consoleInfo('test')
-            expect(console.info.notCalled).to.be.true
+            expect(console.info.notCalled).to.be.true // eslint-disable-line no-console
           })
       })
     })
