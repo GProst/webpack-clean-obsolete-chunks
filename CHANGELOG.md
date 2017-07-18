@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.0 / 2017-07-18
+
+* Add `verbose` option ([#17](https://github.com/GProst/webpack-clean-obsolete-chunks/issues/17))
+
 ## 0.1.10 / 2017-06-17
 
 * Update dependencies
