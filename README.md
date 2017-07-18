@@ -35,10 +35,20 @@ var CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
 module.exports = {
     // ...
     plugins: [
-        new CleanObsoleteChunks()
+        new CleanObsoleteChunks(options)
     ]
     // ...
 };
+```
+
+### Options
+
+``` javascript
+{
+  // Write logs to console.
+  // Default: true
+  verbose: true
+}
 ```
 
 ## How it works
