@@ -12,7 +12,7 @@ const {handleErrors} = require('./helper-functions')
 
 const getConfig = require('./webpack.config.js')
 
-describe('webpack-clean-obsolete-chunks plugin in webpack2 watch mode', () => {
+describe('webpack-clean-obsolete-chunks plugin in webpack3 watch mode', () => {
   let fileToChange //the file we are going to change
   let changedFileInitialContent //initial content of the file we are going to change
 
@@ -34,7 +34,7 @@ describe('webpack-clean-obsolete-chunks plugin in webpack2 watch mode', () => {
     newContent = changedFileInitialContent + JSFileNewContent
     obsoleteFilesMatch = JSObsoleteFileMatch
     config = getConfig()
-    startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, done)
+    startWebpack3(config, fileToChange, newContent, obsoleteFilesMatch, done)
   })
 
   it('SHOULD be able to remove files in the outside of the working directory', (done) => {
@@ -44,7 +44,7 @@ describe('webpack-clean-obsolete-chunks plugin in webpack2 watch mode', () => {
     obsoleteFilesMatch = JSObsoleteFileMatch
     config = getConfig()
     config.output.path = outsideOutputDirectory
-    startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, done)
+    startWebpack3(config, fileToChange, newContent, obsoleteFilesMatch, done)
   })
 
   it('SHOULD remove obsolete css files and its maps', (done) => {
@@ -53,12 +53,12 @@ describe('webpack-clean-obsolete-chunks plugin in webpack2 watch mode', () => {
     changedFileInitialContent = CSSFileInitialContent
     newContent = changedFileInitialContent + CSSFileNewContent
     obsoleteFilesMatch = CSSObsoleteFileMatch
-    startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, done)
+    startWebpack3(config, fileToChange, newContent, obsoleteFilesMatch, done)
   })
 })
 
 
-function startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, done) {
+function startWebpack3(config, fileToChange, newContent, obsoleteFilesMatch, done) {
   const compiler = webpack(config)
   let firstCompilation = true
   let oldFiles

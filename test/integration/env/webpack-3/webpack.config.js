@@ -1,6 +1,6 @@
 'use strict'
 
-const webpack2 = require('webpack')
+const webpack3 = require('webpack')
 const CleanObsoleteChunks = require('./../../../../index')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const WebpackChunkHash = require('webpack-chunk-hash')
@@ -31,7 +31,7 @@ module.exports = function getConfig() {
     plugins: [
       new ExtractTextPlugin('styles.[contenthash].css'),
       
-      new webpack2.optimize.CommonsChunkPlugin({
+      new webpack3.optimize.CommonsChunkPlugin({
         names: ['commons', 'vendor', 'manifest'],
         chunks: ['vendor', 'app'],
         minChuncks: Infinity

@@ -8,7 +8,7 @@ const webpack = require('webpack')
 const {resultingFileAmount} = require('../../../test-config').codeSplitting
 const {handleErrors} = require('../helper-functions')
 
-describe('webpack-clean-obsolete-chunks plugin in webpack2 watch mode', () => {
+describe('webpack-clean-obsolete-chunks plugin in webpack3 watch mode', () => {
   const config = require('./webpack.config.js')
   const outputFilesDir = config.output.path
 

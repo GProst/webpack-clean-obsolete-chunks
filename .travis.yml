@@ -15,6 +15,8 @@ install:
     && yarn; fi
   - if [ $TEST_TYPE == integration ]; then cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-2 \
     && yarn; fi
+  - if [ $TEST_TYPE == integration ]; then cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-3 \
+      && yarn; fi
   - cd $TRAVIS_BUILD_DIR
 script:
   - if [ $TEST_TYPE == coverage ]; then yarn run travis-coverage;
