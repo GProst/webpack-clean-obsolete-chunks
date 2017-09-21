@@ -5,6 +5,8 @@ const fs = require('fs')
 const commonEntryFileDir = path.join(__dirname, './test-entry-files/common')
 const codeSplittingEntryFileDir = path.join(__dirname, './test-entry-files/code-splitting')
 
+module.exports.outputDir = path.join(__dirname, './test-output-files')
+
 module.exports.common = {
   entries: {
     app: path.join(commonEntryFileDir, 'app/index.js'),
@@ -28,5 +30,6 @@ module.exports.common = {
 module.exports.codeSplitting = {
   entries: {
     app: path.join(codeSplittingEntryFileDir, 'app/app.js')
-  }
+  },
+  resultingFileAmount: 14
 }

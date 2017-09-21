@@ -8,6 +8,7 @@ const {
   JSFileToChange, CSSFileToChange, outsideOutputDirectory, JSObsoleteFileMatch, CSSObsoleteFileMatch, JSFileInitialContent,
   JSFileNewContent, CSSFileInitialContent, CSSFileNewContent
 } = require('../../test-config').common
+const {handleErrors} = require('./helper-functions')
 
 const getConfig = require('./webpack.config.js')
 
@@ -85,24 +86,4 @@ function startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, don
       })
     }
   })
-}
-
-function handleErrors(err, stats) {
-  if (err) {
-    console.error(err.stack || err)
-    if (err.details) {
-      console.error(err.details)
-    }
-    return
-  }
-
-  const info = stats.toJson()
-
-  if (stats.hasErrors()) {
-    console.error(info.errors)
-  }
-
-  if (stats.hasWarnings()) {
-    console.warn(info.warnings)
-  }
 }

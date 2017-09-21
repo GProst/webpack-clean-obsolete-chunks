@@ -3,9 +3,8 @@
 const webpack = require('webpack')
 const CleanObsoleteChunks = require('./../../../../../index')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const path = require('path')
 
-const {entries} = require('../../../test-config').codeSplitting
+const {codeSplitting: {entries}, outputDir} = require('../../../test-config')
 
 module.exports = {
   target: 'web',
@@ -15,8 +14,8 @@ module.exports = {
   devtool: 'source-map',
 
   plugins: [
-    new CleanWebpackPlugin(['dist'], {
-      root: __dirname,
+    new CleanWebpackPlugin(['*'], {
+      root: outputDir,
       verbose: false,
       dry: false
     }),
@@ -29,7 +28,7 @@ module.exports = {
   ],
 
   output: {
-    path: path.join(__dirname, 'test-output-files'),
+    path: outputDir,
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js'
   }
