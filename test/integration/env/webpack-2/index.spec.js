@@ -4,7 +4,10 @@ const expect = require('chai').expect
 const fs = require('fs')
 const del = require('del')
 const webpack = require('webpack')
-const {JSFileToChange, CSSFileToChange, outsideOutputDirectory} = require('../../test-config')
+const {
+  JSFileToChange, CSSFileToChange, outsideOutputDirectory, JSObsoleteFileMatch, CSSObsoleteFileMatch, JSFileInitialContent,
+  JSFileNewContent, CSSFileInitialContent, CSSFileNewContent
+} = require('../../test-config')
 
 const getConfig = require('./webpack.config.js')
 
@@ -17,13 +20,6 @@ describe('webpack-clean-obsolete-chunks plugin in webpack2 watch mode', () => {
 
   let config
 
-  beforeEach(() => {
-    fileToChange = JSFileToChange
-    changedFileInitialContent = fs.readFileSync(fileToChange, 'utf-8')
-    newContent = changedFileInitialContent + '\nvar a = \'a\';'
-    obsoleteFilesMatch = /app.*.js.*/
-  })
-
   afterEach(() => {
     //restore initial file content
     fs.writeFileSync(fileToChange, changedFileInitialContent)
@@ -31,13 +27,20 @@ describe('webpack-clean-obsolete-chunks plugin in webpack2 watch mode', () => {
     del.sync(outsideOutputDirectory + '/**', {force: true})
   })
 
-
   it('SHOULD remove all obsolete js files and its maps', (done) => {
+    fileToChange = JSFileToChange
+    changedFileInitialContent = JSFileInitialContent
+    newContent = changedFileInitialContent + JSFileNewContent
+    obsoleteFilesMatch = JSObsoleteFileMatch
     config = getConfig()
     startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, done)
   })
 
   it('SHOULD be able to remove files in the outside of the working directory', (done) => {
+    fileToChange = JSFileToChange
+    changedFileInitialContent = JSFileInitialContent
+    newContent = changedFileInitialContent + JSFileNewContent
+    obsoleteFilesMatch = JSObsoleteFileMatch
     config = getConfig()
     config.output.path = outsideOutputDirectory
     startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, done)
@@ -46,12 +49,11 @@ describe('webpack-clean-obsolete-chunks plugin in webpack2 watch mode', () => {
   it('SHOULD remove obsolete css files and its maps', (done) => {
     config = getConfig()
     fileToChange = CSSFileToChange
-    changedFileInitialContent = fs.readFileSync(fileToChange, 'utf-8')
-    newContent = changedFileInitialContent + '\nbody {background: red;}'
-    obsoleteFilesMatch = /styles.*.css.*/
+    changedFileInitialContent = CSSFileInitialContent
+    newContent = changedFileInitialContent + CSSFileNewContent
+    obsoleteFilesMatch = CSSObsoleteFileMatch
     startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, done)
   })
-
 })
 
 
