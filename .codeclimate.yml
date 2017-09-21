@@ -11,11 +11,10 @@ engines:
   markdownlint:
       enabled: true
   fixme:
-    enabled: true
+    enabled: false
     config:
       strings:
       - FIXME
-      - TODO
       - BUG
 ratings:
   paths:
