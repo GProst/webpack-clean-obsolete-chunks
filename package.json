@@ -19,13 +19,14 @@
   "scripts": {
     "lint": "eslint './**/*.js' -c './.eslintrc.js'",
     "eslint-fix": "eslint './**/*.js' -c './.eslintrc.js' --fix",
-    "install-dev": "yarn && cd test/integration/env/webpack-1 && yarn && cd ../webpack-2 && yarn",
+    "install-dev": "yarn && cd test/integration/env/webpack-1 && yarn && cd ../webpack-2 && yarn && cd ../webpack-3 && yarn",
     "test": "npm run test-unit && npm run test-integration",
     "test-unit": "mocha \"test/unit/**/*.spec.js\"",
     "test-unit-watch": "mocha \"test/unit/**/*.spec.js\" --watch",
-    "test-integration": "npm run test-webpack1 && npm run test-webpack2",
-    "test-webpack1": "mocha \"test/integration/**/webpack-1/*.spec.js\" --timeout 15000",
-    "test-webpack2": "mocha \"test/integration/**/webpack-2/**/*.spec.js\" --timeout 15000",
+    "test-integration": "npm run test-webpack1 && npm run test-webpack2 && npm run test-webpack3",
+    "test-webpack1": "mocha \"test/integration/**/webpack-1/{,!(node_modules)/**/}/*.spec.js\" --timeout 15000",
+    "test-webpack2": "mocha \"test/integration/**/webpack-2/{,!(node_modules)/**/}/*.spec.js\" --timeout 15000",
+    "test-webpack3": "mocha \"test/integration/**/webpack-3/{,!(node_modules)/**/}/*.spec.js\" --timeout 15000",
     "coverage": "istanbul cover _mocha -- \"test/unit/**/*.spec.js\"",
     "travis-coverage": "istanbul cover _mocha --report lcovonly -- \"test/unit/**/*.spec.js\" && cat ./coverage/lcov.info | coveralls"
   },
