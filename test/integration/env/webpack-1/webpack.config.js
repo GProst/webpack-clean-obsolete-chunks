@@ -5,16 +5,14 @@ const CleanObsoleteChunks = require('./../../../../index')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const WebpackChunkHash = require('webpack-chunk-hash')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const path = require('path')
+
+const {common: {entries}, outputDir} = require('../../test-config')
 
 
 module.exports = function getConfig() {
   return {
     context: __dirname,
-    entry: {
-      'app': './../../test-entry-files/app/index.js',
-      'vendor': './../../test-entry-files/vendor/index.js'
-    },
+    entry: entries,
     cache: true,
     devtool: 'source-map',
     
@@ -41,17 +39,17 @@ module.exports = function getConfig() {
       
       new WebpackChunkHash(),
       
-      new CleanWebpackPlugin(['test-output-files'], {
-        root: path.join(__dirname, '../../'),
-        verbose: true,
+      new CleanWebpackPlugin(['*'], {
+        root: outputDir,
+        verbose: false,
         dry: false
       }),
       
-      new CleanObsoleteChunks()
+      new CleanObsoleteChunks({verbose: false})
     ],
     
     output: {
-      path: path.join(__dirname, '../../test-output-files'),
+      path: outputDir,
       filename: '[name].[chunkhash].js',
       chunkFilename: '[name].[chunkhash].js'
     }
