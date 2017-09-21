@@ -7,15 +7,13 @@ const WebpackChunkHash = require('webpack-chunk-hash')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const path = require('path')
 
+const {entries} = require('../../test-config').common
 
 module.exports = function getConfig() {
   return {
     target: 'web',
     context: __dirname,
-    entry: {
-      'app': './../../test-entry-files/app/index.js',
-      'vendor': './../../test-entry-files/vendor/index.js'
-    },
+    entry: entries,
     cache: true,
     devtool: 'source-map',
     

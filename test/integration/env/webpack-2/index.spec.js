@@ -7,7 +7,7 @@ const webpack = require('webpack')
 const {
   JSFileToChange, CSSFileToChange, outsideOutputDirectory, JSObsoleteFileMatch, CSSObsoleteFileMatch, JSFileInitialContent,
   JSFileNewContent, CSSFileInitialContent, CSSFileNewContent
-} = require('../../test-config')
+} = require('../../test-config').common
 
 const getConfig = require('./webpack.config.js')
 

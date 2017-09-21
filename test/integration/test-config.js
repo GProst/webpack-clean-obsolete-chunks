@@ -2,14 +2,19 @@
 const path = require('path')
 const fs = require('fs')
 
-const entryFileDir = path.join(__dirname, './test-entry-files')
+const commonEntryFileDir = path.join(__dirname, './test-entry-files/common')
+const codeSplittingEntryFileDir = path.join(__dirname, './test-entry-files/code-splitting')
 
-module.exports = {
-  JSFileToChange: path.join(entryFileDir, 'app/partB.js'),
+module.exports.common = {
+  entries: {
+    app: path.join(commonEntryFileDir, 'app/index.js'),
+    vendor: path.join(commonEntryFileDir, 'vendor/index.js')
+  },
+  JSFileToChange: path.join(commonEntryFileDir, 'app/partB.js'),
   get JSFileInitialContent() {
     return fs.readFileSync(this.JSFileToChange, 'utf-8')
   },
-  CSSFileToChange: path.join(entryFileDir, 'app/styles/stylesA.css'),
+  CSSFileToChange: path.join(commonEntryFileDir, 'app/styles/stylesA.css'),
   get CSSFileInitialContent() {
     return fs.readFileSync(this.CSSFileToChange, 'utf-8')
   },
@@ -18,4 +23,10 @@ module.exports = {
   CSSObsoleteFileMatch: /styles.*.css.*/,
   JSFileNewContent: '\nvar a = \'a\';',
   CSSFileNewContent: '\nbody {background: red;}'
+}
+
+module.exports.codeSplitting = {
+  entries: {
+    app: path.join(codeSplittingEntryFileDir, 'app/app.js')
+  }
 }

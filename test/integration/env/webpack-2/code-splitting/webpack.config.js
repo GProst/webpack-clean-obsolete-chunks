@@ -5,12 +5,12 @@ const CleanObsoleteChunks = require('./../../../../../index')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const path = require('path')
 
+const {entries} = require('../../../test-config').codeSplitting
+
 module.exports = {
   target: 'web',
   context: __dirname,
-  entry: {
-    'app': './test-entry-files/app/app.js',
-  },
+  entry: entries,
   cache: true,
   devtool: 'source-map',
 
