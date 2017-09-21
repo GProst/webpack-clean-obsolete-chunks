@@ -1,27 +1,26 @@
 'use strict'
 
 const expect = require('chai').expect
-const path = require('path')
 const fs = require('fs')
 const del = require('del')
 const webpack = require('webpack')
+const {JSFileToChange, CSSFileToChange, outsideOutputDirectory} = require('../../test-config')
+
+const getConfig = require('./webpack.config.js')
 
 describe('webpack-clean-obsolete-chunks plugin in webpack2 watch mode', () => {
   let fileToChange //the file we are going to change
   let changedFileInitialContent //initial content of the file we are going to change
-  const entryFileDir = path.join(__dirname, '../../test-entry-files')
 
   let newContent //new content in file we are going to change
   let obsoleteFilesMatch //RegExp that SHOULD match obsolete file names
 
-  let getConfig = require('./webpack.config.js')
-  let outsideOutputDirectory = path.join(process.cwd(), '../test-output-files')
   let config
 
   beforeEach(() => {
-    fileToChange = path.join(entryFileDir, 'app/partB.js')
+    fileToChange = JSFileToChange
     changedFileInitialContent = fs.readFileSync(fileToChange, 'utf-8')
-    newContent = 'var a = \'a\';'
+    newContent = changedFileInitialContent + '\nvar a = \'a\';'
     obsoleteFilesMatch = /app.*.js.*/
   })
 
@@ -46,9 +45,9 @@ describe('webpack-clean-obsolete-chunks plugin in webpack2 watch mode', () => {
 
   it('SHOULD remove obsolete css files and its maps', (done) => {
     config = getConfig()
-    fileToChange = path.join(entryFileDir, 'app/styles/stylesA.css')
+    fileToChange = CSSFileToChange
     changedFileInitialContent = fs.readFileSync(fileToChange, 'utf-8')
-    newContent = 'body {background: red;}'
+    newContent = changedFileInitialContent + '\nbody {background: red;}'
     obsoleteFilesMatch = /styles.*.css.*/
     startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, done)
   })
@@ -81,7 +80,6 @@ function startWebpack2(config, fileToChange, newContent, obsoleteFilesMatch, don
       })
       watching.close(() => {
         done()
-        console.log('Watching webpack2 Ended.') //eslint-disable-line no-console
       })
     }
   })

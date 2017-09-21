@@ -17,11 +17,11 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist'], {
       root: __dirname,
-      verbose: true,
+      verbose: false,
       dry: false
     }),
 
-    new CleanObsoleteChunks(),
+    new CleanObsoleteChunks({verbose: false}),
 
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor'

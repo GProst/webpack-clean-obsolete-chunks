@@ -44,11 +44,11 @@ module.exports = function getConfig() {
       
       new CleanWebpackPlugin(['test-output-files'], {
         root: path.join(__dirname, '../../'),
-        verbose: true,
+        verbose: false,
         dry: false
       }),
       
-      new CleanObsoleteChunks()
+      new CleanObsoleteChunks({verbose: false})
     ],
     
     output: {
