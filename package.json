@@ -25,7 +25,7 @@
     "test-unit-watch": "mocha \"test/unit/**/*.spec.js\" --watch",
     "test-integration": "yarn run test-webpack1 && yarn run test-webpack2 && yarn run test-webpack3",
     "test-webpack1": "mocha \"test/integration/**/webpack-1/{,!(node_modules)/**/}/*.spec.js\" --timeout 15000",
-    "test-webpack2": "mocha \"test/integration/index.spec.js\" --timeout 15000 --webpack 2",
+    "test-webpack2": "mocha \"test/integration/*.spec.js\" --timeout 15000 --webpack 2",
     "test-webpack3": "mocha \"test/integration/**/webpack-3/{,!(node_modules)/**/}/*.spec.js\" --timeout 15000",
     "coverage": "istanbul cover _mocha -- \"test/unit/**/*.spec.js\"",
     "travis-coverage": "istanbul cover _mocha --report lcovonly -- \"test/unit/**/*.spec.js\" && cat ./coverage/lcov.info | coveralls"
