@@ -35,28 +35,30 @@ describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch
     newContent = changedFileInitialContent + JSFileNewContent
     obsoleteFilesMatch = JSObsoleteFileMatch
     config = getWebpackConfig({webpackVersion})
-    const testFunction = checkDeletedFilesByMatch(fileToChange, newContent, obsoleteFilesMatch)
+    const testFunction = checkDeletedFilesByMatch(webpackVersion, fileToChange, newContent, obsoleteFilesMatch)
     startWebpackWatch(webpackVersion, config, testFunction, done)
   })
 
-  it('SHOULD be able to remove files in the outside of the working directory', (done) => {
-    fileToChange = JSFileToChange
-    changedFileInitialContent = JSFileInitialContent
-    newContent = changedFileInitialContent + JSFileNewContent
-    obsoleteFilesMatch = JSObsoleteFileMatch
-    config = getWebpackConfig({webpackVersion})
-    config.output.path = outsideOutputDirectory
-    const testFunction = checkDeletedFilesByMatch(fileToChange, newContent, obsoleteFilesMatch)
-    startWebpackWatch(webpackVersion, config, testFunction, done)
-  })
+  if (webpackVersion !== 1) {
+    it('SHOULD be able to remove files in the outside of the working directory', (done) => {
+      fileToChange = JSFileToChange
+      changedFileInitialContent = JSFileInitialContent
+      newContent = changedFileInitialContent + JSFileNewContent
+      obsoleteFilesMatch = JSObsoleteFileMatch
+      config = getWebpackConfig({webpackVersion})
+      config.output.path = outsideOutputDirectory
+      const testFunction = checkDeletedFilesByMatch(webpackVersion, fileToChange, newContent, obsoleteFilesMatch)
+      startWebpackWatch(webpackVersion, config, testFunction, done)
+    })
 
-  it('SHOULD remove obsolete css files and their maps', (done) => {
-    config = getWebpackConfig({webpackVersion})
-    fileToChange = CSSFileToChange
-    changedFileInitialContent = CSSFileInitialContent
-    newContent = changedFileInitialContent + CSSFileNewContent
-    obsoleteFilesMatch = CSSObsoleteFileMatch
-    const testFunction = checkDeletedFilesByMatch(fileToChange, newContent, obsoleteFilesMatch)
-    startWebpackWatch(webpackVersion, config, testFunction, done)
-  })
+    it('SHOULD remove obsolete css files and their maps', (done) => {
+      config = getWebpackConfig({webpackVersion})
+      fileToChange = CSSFileToChange
+      changedFileInitialContent = CSSFileInitialContent
+      newContent = changedFileInitialContent + CSSFileNewContent
+      obsoleteFilesMatch = CSSObsoleteFileMatch
+      const testFunction = checkDeletedFilesByMatch(webpackVersion, fileToChange, newContent, obsoleteFilesMatch)
+      startWebpackWatch(webpackVersion, config, testFunction, done)
+    })
+  }
 })
