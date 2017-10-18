@@ -6,7 +6,7 @@ const del = require('del')
 const webpack = require('webpack')
 
 const {resultingFileAmount} = require('../../../test-config').codeSplitting
-const {handleErrors} = require('../helper-functions')
+const {handleErrors} = require('../../../helper-functions')
 
 describe('webpack-clean-obsolete-chunks plugin in webpack2 watch mode', () => {
   const config = require('./webpack.config.js')
