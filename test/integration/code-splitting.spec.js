@@ -12,7 +12,7 @@ if (!webpackVersion)
   throw Error('No webpack version provided!')
 
 if (webpackVersion !== 1) {
-  describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch mode`, () => {
+  describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch mode (code splitting)`, () => {
     const config = getWebpackConfig({webpackVersion, codeSplitting: true})
     const outputFilesDir = config.output.path
 
@@ -21,7 +21,7 @@ if (webpackVersion !== 1) {
       del.sync(outputFilesDir + '/**', {force: true})
     })
 
-    it('SHOULD not delete dynamic chunks after first compilation (code splitting)', (done) => {
+    it('SHOULD not delete dynamic chunks after first compilation', (done) => {
       const testFunction = () => {
         const files = fs.readdirSync(outputFilesDir)
         expect(files.length).to.be.equal(resultingFileAmount) //that's not very neat checking
