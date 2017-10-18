@@ -5,18 +5,11 @@ node_js:
   - "6"
 env:
   - TEST_TYPE=unit
-  - TEST_TYPE=integration
 cache:
   yarn: true
 
 install:
-  - yarn
-  - if [ $TEST_TYPE == integration ]; then cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-1 \
-    && yarn; fi
-  - if [ $TEST_TYPE == integration ]; then cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-2 \
-    && yarn; fi
-  - if [ $TEST_TYPE == integration ]; then cd $TRAVIS_BUILD_DIR/test/integration/env/webpack-3 \
-      && yarn; fi
+  - if [ $TEST_TYPE == integration ]; then yarn run install-dev; else yarn; fi
   - cd $TRAVIS_BUILD_DIR
 script:
   - if [ $TEST_TYPE == coverage ]; then yarn run travis-coverage;
@@ -27,6 +20,8 @@ matrix:
   include:
   - node_js: "8"
     env: TEST_TYPE=coverage
+  - node_js: "8.7.0"
+    env: TEST_TYPE=integration
 
 notifications:
   email:
