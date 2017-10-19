@@ -11,14 +11,7 @@ module.exports.checkFilesLengthIsConstant = (webpackVersion, fileToChange, newCo
   return (config, stopCompilation) => {
     if (firstCompilation) {
       oldFiles = fs.readdirSync(config.output.path)
-      if (webpackVersion === 1) {
-        //sometimes webpack1 doesn't see these changes, so we need to wait a little
-        setTimeout(() => {
-          fs.writeFileSync(fileToChange, newContent)
-        }, 1000)
-      } else {
-        fs.writeFileSync(fileToChange, newContent)
-      }
+      fs.writeFileSync(fileToChange, newContent)
       firstCompilation = false
     } else {
       try {
