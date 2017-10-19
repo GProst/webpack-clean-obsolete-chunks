@@ -16,8 +16,6 @@ module.exports = function getConfig({webpackVersion = 3, codeSplitting = false} 
   const WebpackChunkHash = require(path.resolve(node_modules, 'webpack-chunk-hash'))
   const CleanWebpackPlugin = require(path.resolve(node_modules, 'clean-webpack-plugin'))
 
-  const rules = webpackVersion === 1 ? 'loaders' : 'rules'
-
   return {
     target: 'web',
     context: __dirname,
@@ -26,21 +24,13 @@ module.exports = function getConfig({webpackVersion = 3, codeSplitting = false} 
     devtool: 'source-map',
 
     module: {
-      [rules]: webpackVersion === 1
-        ? [{
-          test: /\.css/,
-          loader: ExtractTextPlugin.extract(
-            path.resolve(node_modules, 'style-loader'),
-            `${path.resolve(node_modules, 'css-loader')}?sourceMap`
-          )
-        }]
-        : [{
-          test: /\.css/,
-          use: ExtractTextPlugin.extract({
-            fallback: path.resolve(node_modules, 'style-loader'),
-            use: `${path.resolve(node_modules, 'css-loader')}?sourceMap`
-          })
-        }]
+      rules: [{
+        test: /\.css/,
+        use: ExtractTextPlugin.extract({
+          fallback: path.resolve(node_modules, 'style-loader'),
+          use: `${path.resolve(node_modules, 'css-loader')}?sourceMap`
+        })
+      }]
     },
 
     plugins: [
