@@ -16,7 +16,6 @@ const {checkFilesLengthIsConstant, getWebpackConfig, startWebpackWatch} = requir
 describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch mode`, () => {
   let fileToChange //the file we are going to change
   let changedFileInitialContent //initial content of the file we are going to change
-
   let newContent //new content in file we are going to change
 
   let config
