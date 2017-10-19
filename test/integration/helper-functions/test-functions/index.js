@@ -21,9 +21,13 @@ module.exports.checkFilesLengthIsConstant = (webpackVersion, fileToChange, newCo
       }
       firstCompilation = false
     } else {
-      newFiles = fs.readdirSync(config.output.path)
-      expect(newFiles).to.have.length(oldFiles.length)
-      stopCompilation()
+      try {
+        newFiles = fs.readdirSync(config.output.path)
+        expect(newFiles).to.have.length(oldFiles.length)
+        stopCompilation()
+      } catch (err) {
+        stopCompilation(err)
+      }
     }
   }
 }

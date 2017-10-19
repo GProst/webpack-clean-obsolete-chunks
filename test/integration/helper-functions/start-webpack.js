@@ -30,9 +30,9 @@ module.exports.startWebpackWatch = ({webpackVersion, config, testFunction, withC
     testFunction(config, stopCompilation)
   })
 
-  const stopCompilation = () => {
+  const stopCompilation = (err) => {
     watching.close(() => {
-      done()
+      done(err)
     })
   }
 }
