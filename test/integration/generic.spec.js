@@ -36,7 +36,7 @@ describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch
     obsoleteFilesMatch = JSObsoleteFileMatch
     config = getWebpackConfig({webpackVersion})
     const testFunction = checkDeletedFilesByMatch(webpackVersion, fileToChange, newContent, obsoleteFilesMatch)
-    startWebpackWatch(webpackVersion, config, testFunction, done)
+    startWebpackWatch({webpackVersion, config, testFunction}, done)
   })
 
   if (webpackVersion !== 1) {
@@ -48,7 +48,7 @@ describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch
       config = getWebpackConfig({webpackVersion})
       config.output.path = outsideOutputDirectory
       const testFunction = checkDeletedFilesByMatch(webpackVersion, fileToChange, newContent, obsoleteFilesMatch)
-      startWebpackWatch(webpackVersion, config, testFunction, done)
+      startWebpackWatch({webpackVersion, config, testFunction}, done)
     })
 
     it('SHOULD remove obsolete css files and their maps', (done) => {
@@ -58,7 +58,7 @@ describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch
       newContent = changedFileInitialContent + CSSFileNewContent
       obsoleteFilesMatch = CSSObsoleteFileMatch
       const testFunction = checkDeletedFilesByMatch(webpackVersion, fileToChange, newContent, obsoleteFilesMatch)
-      startWebpackWatch(webpackVersion, config, testFunction, done)
+      startWebpackWatch({webpackVersion, config, testFunction}, done)
     })
   }
 })
