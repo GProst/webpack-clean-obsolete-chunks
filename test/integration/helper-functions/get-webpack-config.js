@@ -8,7 +8,7 @@ const {
 } = require('../test-config')
 const getWebpack = require('./get-webpack')
 
-module.exports = function getConfig({webpackVersion = 3, codeSplitting = false} = {}) {
+module.exports = function getConfig({webpackVersion = 3, codeSplitting = false, deep = true} = {}) {
   const webpack = getWebpack(webpackVersion)
   const node_modules = path.resolve(__dirname, `../env/webpack-${webpackVersion}/node_modules/`)
 
@@ -50,7 +50,7 @@ module.exports = function getConfig({webpackVersion = 3, codeSplitting = false} 
         dry: false
       }),
 
-      new CleanObsoleteChunks({verbose: false})
+      new CleanObsoleteChunks({verbose: false, deep})
     ].filter(Boolean),
 
     output: {

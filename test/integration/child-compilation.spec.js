@@ -10,7 +10,7 @@ const webpackVersion = require('minimist')(process.argv.slice(2)).webpack
 if (!webpackVersion)
   throw Error('No webpack version provided!')
 
-const {checkFilesLengthIsConstant, getWebpackConfig, startWebpackWatch} = require('./helper-functions')
+const {testFunctions: {checkFilesLength}, getWebpackConfig, startWebpackWatch} = require('./helper-functions')
 
 describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch mode (child compilation)`, () => {
   let fileToChange //the file we are going to change
@@ -31,7 +31,16 @@ describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch
     changedFileInitialContent = JSFileInitialContent
     newContent = changedFileInitialContent + JSFileNewContent
     config = getWebpackConfig({webpackVersion})
-    const testFunction = checkFilesLengthIsConstant(webpackVersion, fileToChange, newContent)
+    const testFunction = checkFilesLength({fileToChange, newContent})
+    startWebpackWatch({webpackVersion, config, testFunction, withChildCompilation: true}, done)
+  })
+
+  it('SHOULD remove all obsolete js files and their maps only in main compilation if {deep: false} option provided', (done) => {
+    fileToChange = JSFileToChange
+    changedFileInitialContent = JSFileInitialContent
+    newContent = changedFileInitialContent + JSFileNewContent
+    config = getWebpackConfig({webpackVersion, deep: false})
+    const testFunction = checkFilesLength({fileToChange, newContent, sameLength: false})
     startWebpackWatch({webpackVersion, config, testFunction, withChildCompilation: true}, done)
   })
 })

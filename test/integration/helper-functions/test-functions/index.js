@@ -3,7 +3,7 @@
 const expect = require('chai').expect
 const fs = require('fs')
 
-module.exports.checkFilesLengthIsConstant = (webpackVersion, fileToChange, newContent) => {
+module.exports.checkFilesLength = ({fileToChange, newContent, sameLength = true}) => {
   let firstCompilation = true
   let oldFiles
   let newFiles
@@ -16,7 +16,11 @@ module.exports.checkFilesLengthIsConstant = (webpackVersion, fileToChange, newCo
     } else {
       try {
         newFiles = fs.readdirSync(config.output.path)
-        expect(newFiles).to.have.length(oldFiles.length)
+        if (sameLength) {
+          expect(newFiles).to.have.length(oldFiles.length)
+        } else {
+          expect(newFiles).not.to.have.length(oldFiles.length)
+        }
         stopCompilation()
       } catch (err) {
         stopCompilation(err)

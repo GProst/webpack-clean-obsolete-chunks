@@ -1,6 +1,5 @@
 'use strict'
 
-const {checkFilesLengthIsConstant} = require('./test-functions')
 const {startWebpackWatch, startWebpack} = require('./start-webpack')
 
 module.exports = {
@@ -9,5 +8,5 @@ module.exports = {
   startWebpackWatch,
   startWebpack,
   getWebpackConfig: require('./get-webpack-config'),
-  checkFilesLengthIsConstant
+  testFunctions: require('./test-functions')
 }

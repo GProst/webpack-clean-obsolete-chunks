@@ -11,7 +11,7 @@ const webpackVersion = require('minimist')(process.argv.slice(2)).webpack
 if (!webpackVersion)
   throw Error('No webpack version provided!')
 
-const {checkFilesLengthIsConstant, getWebpackConfig, startWebpackWatch} = require('./helper-functions')
+const {testFunctions: {checkFilesLength}, getWebpackConfig, startWebpackWatch} = require('./helper-functions')
 
 describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch mode`, () => {
   let fileToChange //the file we are going to change
@@ -32,7 +32,7 @@ describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch
     changedFileInitialContent = JSFileInitialContent
     newContent = changedFileInitialContent + JSFileNewContent
     config = getWebpackConfig({webpackVersion})
-    const testFunction = checkFilesLengthIsConstant(webpackVersion, fileToChange, newContent)
+    const testFunction = checkFilesLength({fileToChange, newContent})
     startWebpackWatch({webpackVersion, config, testFunction}, done)
   })
 
@@ -42,7 +42,7 @@ describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch
     newContent = changedFileInitialContent + JSFileNewContent
     config = getWebpackConfig({webpackVersion})
     config.output.path = outsideOutputDirectory
-    const testFunction = checkFilesLengthIsConstant(webpackVersion, fileToChange, newContent)
+    const testFunction = checkFilesLength({fileToChange, newContent})
     startWebpackWatch({webpackVersion, config, testFunction}, done)
   })
 
@@ -51,7 +51,7 @@ describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch
     fileToChange = CSSFileToChange
     changedFileInitialContent = CSSFileInitialContent
     newContent = changedFileInitialContent + CSSFileNewContent
-    const testFunction = checkFilesLengthIsConstant(webpackVersion, fileToChange, newContent)
+    const testFunction = checkFilesLength({fileToChange, newContent})
     startWebpackWatch({webpackVersion, config, testFunction}, done)
   })
 })
