@@ -11,11 +11,11 @@ module.exports.startWebpackWatch = ({webpackVersion, config, testFunction, withC
 
   if (withChildCompilation) {
     compiler.plugin('make', (compilation, callback) => {
-      const childCompiler = compilation.createChildCompiler('my-child-compiler')
+      const childCompiler = compilation.createChildCompiler('my-child-compiler', {}, [
+        new SingleEntryPlugin(compiler.context, entries.app, 'child-compilation-chunk')
+      ])
 
-      childCompiler.apply(new SingleEntryPlugin(compiler.context, entries.app, 'child-compilation-chunk'))
-
-      childCompiler.runAsChild(err => {
+      childCompiler.runAsChild((err, entries, childCompilation) => {
         callback(err)
       })
     })

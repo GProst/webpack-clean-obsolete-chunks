@@ -8,7 +8,7 @@ const {
 } = require('../test-config')
 const getWebpack = require('./get-webpack')
 
-module.exports = function getConfig({webpackVersion = 3, codeSplitting = false, deep = true} = {}) {
+module.exports = function getConfig({webpackVersion = 3, codeSplitting = false, deep = false} = {}) {
   const webpack = getWebpack(webpackVersion)
   const node_modules = path.resolve(__dirname, `../env/webpack-${webpackVersion}/node_modules/`)
 

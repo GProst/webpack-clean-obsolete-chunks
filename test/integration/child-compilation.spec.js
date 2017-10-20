@@ -26,20 +26,20 @@ describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch
     del.sync(outsideOutputDirectory + '/**', {force: true})
   })
 
-  it('SHOULD remove all obsolete js files and their maps in main and child compilations', (done) => {
+  it('SHOULD remove all obsolete js files and their maps in main and child compilations if {deep: true} option provided', (done) => {
     fileToChange = JSFileToChange
     changedFileInitialContent = JSFileInitialContent
     newContent = changedFileInitialContent + JSFileNewContent
-    config = getWebpackConfig({webpackVersion})
+    config = getWebpackConfig({webpackVersion, deep: true})
     const testFunction = checkFilesLength({fileToChange, newContent})
     startWebpackWatch({webpackVersion, config, testFunction, withChildCompilation: true}, done)
   })
 
-  it('SHOULD remove all obsolete js files and their maps only in main compilation if {deep: false} option provided', (done) => {
+  it('SHOULD remove all obsolete js files and their maps only in main compilation', (done) => {
     fileToChange = JSFileToChange
     changedFileInitialContent = JSFileInitialContent
     newContent = changedFileInitialContent + JSFileNewContent
-    config = getWebpackConfig({webpackVersion, deep: false})
+    config = getWebpackConfig({webpackVersion})
     const testFunction = checkFilesLength({fileToChange, newContent, sameLength: false})
     startWebpackWatch({webpackVersion, config, testFunction, withChildCompilation: true}, done)
   })
