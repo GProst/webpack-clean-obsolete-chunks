@@ -14,6 +14,38 @@ describe('CleanObsoleteChunks', () => {
     beforeEach(() => {
       inst = new CleanObsoleteChunks()
     })
+
+    describe('method _retrieveAllChunks(compilations)', () => {
+      describe('in order to retrieve all chunks', () => {
+        const compilation = {
+          chunks: [{id: 1}, {id: 2}, {id: 3}],
+          children: [{
+            name: 'child-compilation',
+            chunks: [{id: 1}, {id: 2}, {id: 3}],
+            children: []
+          }]
+        }
+
+        it('SHOULD return array with all chunks of INITIAL compilation only if {deep: false} option provided', () => {
+          const chunks = inst._retrieveAllChunks([compilation])
+          expect(chunks).to.have.length(compilation.chunks.length)
+        })
+
+        it('SHOULD return array with all chunks of all compilations if {deep: true} option provided', () => {
+          inst.options.deep = true
+          const chunks = inst._retrieveAllChunks([compilation])
+          expect(chunks).to.have.length(compilation.chunks.concat(compilation.children[0].chunks).length)
+        })
+
+        it('SHOULD add correct uniqueId to all chunks in all compilations', () => {
+          inst.options.deep = true
+          const chunks = inst._retrieveAllChunks([compilation])
+          chunks.forEach(chunk => {
+            expect('uniqueId' in chunk).to.be.true
+          })
+        })
+      })
+    })
     
     describe('method _saveChunkConfig(chunk)', () => {
       describe('in order to save chunks versions', () => {
@@ -48,11 +80,21 @@ describe('CleanObsoleteChunks', () => {
           }
         )
       })
-      
     })
     
     describe('method _getObsoleteFiles(compilation)', () => {
       describe('in order to get obsolete chunk files', () => {
+        it('SHOULD call _retrieveAllChunks() with [compilation] argument',
+          () => {
+            let compilation = Math.random()
+            let _retrieveAllChunks = sinon.stub(inst, '_retrieveAllChunks')
+            _retrieveAllChunks.returns([])
+            expect(_retrieveAllChunks.notCalled).to.be.true
+            inst._getObsoleteFiles(compilation)
+            expect(_retrieveAllChunks.calledOnce).to.be.true
+            expect(_retrieveAllChunks.args[0][0]).to.be.deep.equal([compilation])
+          })
+
         it('SHOULD call _getChunkObsoleteFiles(chunk) for each chunk in compilation.chunks',
           () => {
             let compilation = {
@@ -227,6 +269,12 @@ describe('CleanObsoleteChunks', () => {
           'SHOULD set verbose option to true',
           () => {
             expect(inst.options.verbose).to.be.true
+          })
+
+        it(
+          'SHOULD set deep option to false',
+          () => {
+            expect(inst.options.deep).to.be.false
           })
       })
 
