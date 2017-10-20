@@ -21,7 +21,7 @@ describe('CleanObsoleteChunks', () => {
           let chunkId = 1
           expect(inst.chunkVersions.get(chunkId)).to.be.equal(undefined)
           let chunk = {
-            id: chunkId,
+            uniqueId: chunkId,
             files: ['test-file-name1'],
             hash: 'hash1'
           }
@@ -39,7 +39,7 @@ describe('CleanObsoleteChunks', () => {
             let files = ['file1', 'file2', 'file3']
             let chunkId = 1
             let chunk = {
-              id: chunkId,
+              uniqueId: chunkId,
               files: files,
               hash: 'hash'
             }
@@ -56,14 +56,14 @@ describe('CleanObsoleteChunks', () => {
         it('SHOULD call _getChunkObsoleteFiles(chunk) for each chunk in compilation.chunks',
           () => {
             let compilation = {
-              chunks: ['chunk1', 'chunk2', 'chunk3']
+              chunks: [{id: 1}, {id: 2}, {id: 3}]
             }
             let _getChunkObsoleteFiles = sinon.stub(inst, '_getChunkObsoleteFiles')
             expect(_getChunkObsoleteFiles.notCalled).to.be.true
             inst._getObsoleteFiles(compilation)
             expect(_getChunkObsoleteFiles.callCount).to.be.equal(3)
             _getChunkObsoleteFiles.args.forEach((args, index) => {
-              expect(args[0]).to.be.deep.equal(compilation.chunks[index])
+              expect(args[0].id).to.be.deep.equal(compilation.chunks[index].id)
             })
           })
         
@@ -104,7 +104,7 @@ describe('CleanObsoleteChunks', () => {
       describe('in order to get obsolete chunk files', () => {
         it('SHOULD return empty array if there is no chunkVersions[chunk.name]', () => {
           let chunk = {
-            id: 1
+            uniqueId: 1
           }
           expect(inst._getChunkObsoleteFiles(chunk)).to.be.deep.equal([])
         })
@@ -112,7 +112,7 @@ describe('CleanObsoleteChunks', () => {
         it('SHOULD return only obsolete files', () => {
           const chunkId = 1
           let oldChunk = {
-            id: chunkId,
+            uniqueId: chunkId,
             files: ['file1(old-name)', 'file2(old-name)', 'file3(old-name)']
           }
           inst.chunkVersions.set(chunkId, {
