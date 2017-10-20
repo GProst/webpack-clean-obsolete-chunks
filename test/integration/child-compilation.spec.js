@@ -12,35 +12,37 @@ if (!webpackVersion)
 
 const {testFunctions: {checkFilesLength}, getWebpackConfig, startWebpackWatch} = require('./helper-functions')
 
-describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch mode (child compilation)`, () => {
-  let fileToChange //the file we are going to change
-  let changedFileInitialContent //initial content of the file we are going to change
-  let newContent //new content in file we are going to change
+if (webpackVersion > 2) {
+  describe(`webpack-clean-obsolete-chunks plugin in webpack${webpackVersion} watch mode (child compilation)`, () => {
+    let fileToChange //the file we are going to change
+    let changedFileInitialContent //initial content of the file we are going to change
+    let newContent //new content in file we are going to change
 
-  let config
+    let config
 
-  afterEach(() => {
-    //restore initial file content
-    fs.writeFileSync(fileToChange, changedFileInitialContent)
-    //removing created directory after tests
-    del.sync(outsideOutputDirectory + '/**', {force: true})
+    afterEach(() => {
+      //restore initial file content
+      fs.writeFileSync(fileToChange, changedFileInitialContent)
+      //removing created directory after tests
+      del.sync(outsideOutputDirectory + '/**', {force: true})
+    })
+
+    it('SHOULD remove all obsolete js files and their maps in main and child compilations if {deep: true} option provided', (done) => {
+      fileToChange = JSFileToChange
+      changedFileInitialContent = JSFileInitialContent
+      newContent = changedFileInitialContent + JSFileNewContent
+      config = getWebpackConfig({webpackVersion, deep: true})
+      const testFunction = checkFilesLength({fileToChange, newContent})
+      startWebpackWatch({webpackVersion, config, testFunction, withChildCompilation: true}, done)
+    })
+
+    it('SHOULD remove all obsolete js files and their maps only in main compilation', (done) => {
+      fileToChange = JSFileToChange
+      changedFileInitialContent = JSFileInitialContent
+      newContent = changedFileInitialContent + JSFileNewContent
+      config = getWebpackConfig({webpackVersion})
+      const testFunction = checkFilesLength({fileToChange, newContent, sameLength: false})
+      startWebpackWatch({webpackVersion, config, testFunction, withChildCompilation: true}, done)
+    })
   })
-
-  it('SHOULD remove all obsolete js files and their maps in main and child compilations if {deep: true} option provided', (done) => {
-    fileToChange = JSFileToChange
-    changedFileInitialContent = JSFileInitialContent
-    newContent = changedFileInitialContent + JSFileNewContent
-    config = getWebpackConfig({webpackVersion, deep: true})
-    const testFunction = checkFilesLength({fileToChange, newContent})
-    startWebpackWatch({webpackVersion, config, testFunction, withChildCompilation: true}, done)
-  })
-
-  it('SHOULD remove all obsolete js files and their maps only in main compilation', (done) => {
-    fileToChange = JSFileToChange
-    changedFileInitialContent = JSFileInitialContent
-    newContent = changedFileInitialContent + JSFileNewContent
-    config = getWebpackConfig({webpackVersion})
-    const testFunction = checkFilesLength({fileToChange, newContent, sameLength: false})
-    startWebpackWatch({webpackVersion, config, testFunction, withChildCompilation: true}, done)
-  })
-})
+}
