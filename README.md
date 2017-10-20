@@ -47,7 +47,7 @@ module.exports = {
 {
   // Write logs to console.
   // Default: true
-  verbose: true
+  verbose: true,
 
   // Clean obsolete chunks of webpack child compilations.
   // Default: false
