@@ -48,8 +48,15 @@ module.exports = {
   // Write logs to console.
   // Default: true
   verbose: true
+
+  // Clean obsolete chunks of webpack child compilations.
+  // Default: false
+  deep: true
 }
 ```
+
+> NOTE: `{deep: true}` option will work only if all descendent
+compilations of the initial compilation have **unique** names
 
 ## How it works
 

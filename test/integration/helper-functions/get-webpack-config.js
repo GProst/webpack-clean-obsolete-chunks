@@ -8,15 +8,13 @@ const {
 } = require('../test-config')
 const getWebpack = require('./get-webpack')
 
-module.exports = function getConfig({webpackVersion = 3, codeSplitting = false} = {}) {
+module.exports = function getConfig({webpackVersion = 3, codeSplitting = false, deep = false} = {}) {
   const webpack = getWebpack(webpackVersion)
   const node_modules = path.resolve(__dirname, `../env/webpack-${webpackVersion}/node_modules/`)
 
   const ExtractTextPlugin = require(path.resolve(node_modules, 'extract-text-webpack-plugin'))
   const WebpackChunkHash = require(path.resolve(node_modules, 'webpack-chunk-hash'))
   const CleanWebpackPlugin = require(path.resolve(node_modules, 'clean-webpack-plugin'))
-
-  const rules = webpackVersion === 1 ? 'loaders' : 'rules'
 
   return {
     target: 'web',
@@ -26,21 +24,13 @@ module.exports = function getConfig({webpackVersion = 3, codeSplitting = false} 
     devtool: 'source-map',
 
     module: {
-      [rules]: webpackVersion === 1
-        ? [{
-          test: /\.css/,
-          loader: ExtractTextPlugin.extract(
-            path.resolve(node_modules, 'style-loader'),
-            `${path.resolve(node_modules, 'css-loader')}?sourceMap`
-          )
-        }]
-        : [{
-          test: /\.css/,
-          use: ExtractTextPlugin.extract({
-            fallback: path.resolve(node_modules, 'style-loader'),
-            use: `${path.resolve(node_modules, 'css-loader')}?sourceMap`
-          })
-        }]
+      rules: [{
+        test: /\.css/,
+        use: ExtractTextPlugin.extract({
+          fallback: path.resolve(node_modules, 'style-loader'),
+          use: `${path.resolve(node_modules, 'css-loader')}?sourceMap`
+        })
+      }]
     },
 
     plugins: [
@@ -60,7 +50,7 @@ module.exports = function getConfig({webpackVersion = 3, codeSplitting = false} 
         dry: false
       }),
 
-      new CleanObsoleteChunks({verbose: false})
+      new CleanObsoleteChunks({verbose: false, deep})
     ].filter(Boolean),
 
     output: {

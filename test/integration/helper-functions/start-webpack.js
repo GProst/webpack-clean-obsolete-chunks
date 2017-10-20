@@ -2,10 +2,24 @@
 
 const handleErrors = require('./handle-errors')
 const getWebpack = require('./get-webpack')
+const {common: {entries}} = require('../test-config')
 
-module.exports.startWebpackWatch = function startWebpackWatch(webpackVersion, config, testFunction, done) {
+module.exports.startWebpackWatch = ({webpackVersion, config, testFunction, withChildCompilation = false}, done) => {
+  const SingleEntryPlugin = require(`../env/webpack-${webpackVersion}/node_modules/webpack/lib/SingleEntryPlugin`)
   const webpack = getWebpack(webpackVersion)
   const compiler = webpack(config)
+
+  if (withChildCompilation) {
+    compiler.plugin('make', (compilation, callback) => {
+      const childCompiler = compilation.createChildCompiler('my-child-compiler', {}, [
+        new SingleEntryPlugin(compiler.context, entries.app, 'child-compilation-chunk')
+      ])
+
+      childCompiler.runAsChild((err, entries, childCompilation) => {
+        callback(err)
+      })
+    })
+  }
 
   const watching = compiler.watch({
     aggregateTimeout: 300,
@@ -16,14 +30,14 @@ module.exports.startWebpackWatch = function startWebpackWatch(webpackVersion, co
     testFunction(config, stopCompilation)
   })
 
-  const stopCompilation = () => {
+  const stopCompilation = (err) => {
     watching.close(() => {
-      done()
+      done(err)
     })
   }
 }
 
-module.exports.startWebpack = function startWebpack(webpackVersion, config, testFunction, done) {
+module.exports.startWebpack = (webpackVersion, config, testFunction, done) => {
   const webpack = getWebpack(webpackVersion)
   const compiler = webpack(config)
 
@@ -33,3 +47,4 @@ module.exports.startWebpack = function startWebpack(webpackVersion, config, test
     testFunction(config)
   })
 }
+

@@ -1,6 +1,5 @@
 'use strict'
 
-const {checkDeletedFilesByMatch} = require('./test-functions')
 const {startWebpackWatch, startWebpack} = require('./start-webpack')
 
 module.exports = {
@@ -9,5 +8,5 @@ module.exports = {
   startWebpackWatch,
   startWebpack,
   getWebpackConfig: require('./get-webpack-config'),
-  checkDeletedFilesByMatch
+  testFunctions: require('./test-functions')
 }

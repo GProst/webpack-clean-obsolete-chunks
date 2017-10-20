@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.0 / 2017-10-20
+
+* Add `deep` option to clean obsolete chunks in child compilations ([#21](https://github.com/GProst/webpack-clean-obsolete-chunks/issues/21))
+
 ## 0.2.0 / 2017-07-18
 
 * Add `verbose` option ([#17](https://github.com/GProst/webpack-clean-obsolete-chunks/issues/17))

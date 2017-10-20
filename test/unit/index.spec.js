@@ -14,6 +14,38 @@ describe('CleanObsoleteChunks', () => {
     beforeEach(() => {
       inst = new CleanObsoleteChunks()
     })
+
+    describe('method _retrieveAllChunks(compilations)', () => {
+      describe('in order to retrieve all chunks', () => {
+        const compilation = {
+          chunks: [{id: 1}, {id: 2}, {id: 3}],
+          children: [{
+            name: 'child-compilation',
+            chunks: [{id: 1}, {id: 2}, {id: 3}],
+            children: []
+          }]
+        }
+
+        it('SHOULD return array with all chunks of INITIAL compilation only if {deep: false} option provided', () => {
+          const chunks = inst._retrieveAllChunks([compilation])
+          expect(chunks).to.have.length(compilation.chunks.length)
+        })
+
+        it('SHOULD return array with all chunks of all compilations if {deep: true} option provided', () => {
+          inst.options.deep = true
+          const chunks = inst._retrieveAllChunks([compilation])
+          expect(chunks).to.have.length(compilation.chunks.concat(compilation.children[0].chunks).length)
+        })
+
+        it('SHOULD add correct uniqueId to all chunks in all compilations', () => {
+          inst.options.deep = true
+          const chunks = inst._retrieveAllChunks([compilation])
+          chunks.forEach(chunk => {
+            expect('uniqueId' in chunk).to.be.true
+          })
+        })
+      })
+    })
     
     describe('method _saveChunkConfig(chunk)', () => {
       describe('in order to save chunks versions', () => {
@@ -21,7 +53,7 @@ describe('CleanObsoleteChunks', () => {
           let chunkId = 1
           expect(inst.chunkVersions.get(chunkId)).to.be.equal(undefined)
           let chunk = {
-            id: chunkId,
+            uniqueId: chunkId,
             files: ['test-file-name1'],
             hash: 'hash1'
           }
@@ -39,7 +71,7 @@ describe('CleanObsoleteChunks', () => {
             let files = ['file1', 'file2', 'file3']
             let chunkId = 1
             let chunk = {
-              id: chunkId,
+              uniqueId: chunkId,
               files: files,
               hash: 'hash'
             }
@@ -48,22 +80,32 @@ describe('CleanObsoleteChunks', () => {
           }
         )
       })
-      
     })
     
     describe('method _getObsoleteFiles(compilation)', () => {
       describe('in order to get obsolete chunk files', () => {
+        it('SHOULD call _retrieveAllChunks() with [compilation] argument',
+          () => {
+            let compilation = Math.random()
+            let _retrieveAllChunks = sinon.stub(inst, '_retrieveAllChunks')
+            _retrieveAllChunks.returns([])
+            expect(_retrieveAllChunks.notCalled).to.be.true
+            inst._getObsoleteFiles(compilation)
+            expect(_retrieveAllChunks.calledOnce).to.be.true
+            expect(_retrieveAllChunks.args[0][0]).to.be.deep.equal([compilation])
+          })
+
         it('SHOULD call _getChunkObsoleteFiles(chunk) for each chunk in compilation.chunks',
           () => {
             let compilation = {
-              chunks: ['chunk1', 'chunk2', 'chunk3']
+              chunks: [{id: 1}, {id: 2}, {id: 3}]
             }
             let _getChunkObsoleteFiles = sinon.stub(inst, '_getChunkObsoleteFiles')
             expect(_getChunkObsoleteFiles.notCalled).to.be.true
             inst._getObsoleteFiles(compilation)
             expect(_getChunkObsoleteFiles.callCount).to.be.equal(3)
             _getChunkObsoleteFiles.args.forEach((args, index) => {
-              expect(args[0]).to.be.deep.equal(compilation.chunks[index])
+              expect(args[0].id).to.be.deep.equal(compilation.chunks[index].id)
             })
           })
         
@@ -104,7 +146,7 @@ describe('CleanObsoleteChunks', () => {
       describe('in order to get obsolete chunk files', () => {
         it('SHOULD return empty array if there is no chunkVersions[chunk.name]', () => {
           let chunk = {
-            id: 1
+            uniqueId: 1
           }
           expect(inst._getChunkObsoleteFiles(chunk)).to.be.deep.equal([])
         })
@@ -112,7 +154,7 @@ describe('CleanObsoleteChunks', () => {
         it('SHOULD return only obsolete files', () => {
           const chunkId = 1
           let oldChunk = {
-            id: chunkId,
+            uniqueId: chunkId,
             files: ['file1(old-name)', 'file2(old-name)', 'file3(old-name)']
           }
           inst.chunkVersions.set(chunkId, {
@@ -227,6 +269,12 @@ describe('CleanObsoleteChunks', () => {
           'SHOULD set verbose option to true',
           () => {
             expect(inst.options.verbose).to.be.true
+          })
+
+        it(
+          'SHOULD set deep option to false',
+          () => {
+            expect(inst.options.deep).to.be.false
           })
       })
 
