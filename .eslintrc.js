@@ -42,7 +42,7 @@ module.exports = {
     "no-multi-spaces": "error",
     "no-process-exit": "error",
     "space-in-parens": "error",
-    "no-unused-vars": ["error", {"caughtErrors": "all"}],
+    "no-unused-vars": ["error", {"caughtErrors": "all", "args": "none"}],
     "key-spacing": "error",
     "space-infix-ops": ["error", {"int32Hint": false}],
     "no-loop-func": "error",
