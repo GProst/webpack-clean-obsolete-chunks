@@ -50,11 +50,13 @@ module.exports = {
   verbose: true
 
   // Clean obsolete chunks of webpack child compilations.
-  // NOTE: will work only if all descendent compilations of the initial compilation have UNIQUE names
   // Default: false
   deep: true
 }
 ```
+
+> NOTE: `{deep: true}` option will work only if all descendent
+compilations of the initial compilation have **unique** names
 
 ## How it works
 
