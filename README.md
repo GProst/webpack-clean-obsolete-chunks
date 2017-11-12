@@ -63,6 +63,11 @@ compilations of the initial compilation have **unique** names
 Plugin searches for all updated chunks and deletes obsolete files in output
 directory after each webpack compilation.
 
+## Support
+
+We currently support **Node.js** of version ^6, ^7, ^8 and **Webpack**
+of versions ^2, ^3 (but ^1 should work also).
+
 ## Contribution
 
 You're free to contribute to this project by submitting
