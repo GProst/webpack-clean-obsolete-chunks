@@ -5,6 +5,7 @@ const getWebpack = require('./get-webpack')
 const {common: {entries}} = require('../test-config')
 
 module.exports.startWebpackWatch = ({webpackVersion, config, testFunction, withChildCompilation = false}, done) => {
+  const ExtractTextPlugin = require(`../env/webpack-${webpackVersion}/node_modules/extract-text-webpack-plugin`)
   const SingleEntryPlugin = require(`../env/webpack-${webpackVersion}/node_modules/webpack/lib/SingleEntryPlugin`)
   const webpack = getWebpack(webpackVersion)
   const compiler = webpack(config)
@@ -12,6 +13,7 @@ module.exports.startWebpackWatch = ({webpackVersion, config, testFunction, withC
   if (withChildCompilation) {
     compiler.plugin('make', (compilation, callback) => {
       const childCompiler = compilation.createChildCompiler('my-child-compiler', {}, [
+        new ExtractTextPlugin('styles.[hash].css'),
         new SingleEntryPlugin(compiler.context, entries.app, 'child-compilation-chunk')
       ])
 
