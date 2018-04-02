@@ -195,14 +195,35 @@ describe('CleanObsoleteChunks', () => {
     
     describe('method apply(compiler)', () => {
       describe('in order to remove obsolete chunks files in webpack watch mode', () => {
+        beforeEach(() => {
+          sinon.stub(inst._removeObsoleteFiles, 'bind').returns(inst._removeObsoleteFiles)
+        })
+        afterEach(() => {
+          inst._removeObsoleteFiles.bind.restore()
+        })
         it(
           `SHOULD get hooked on compiler 'after-emit' event and pass _removeObsoleteFiles method
           as a callback`,
           () => {
+            let hook = sinon.stub()
+            let compiler = {
+              hooks: {
+                afterEmit: {tapAsync: hook}
+              }
+            }
+            inst.apply(compiler)
+            expect(hook.callCount).to.be.equal(1)
+            expect(hook.args[0][0]).to.be.equal('webpack-clean-obsolete-chunks')
+            expect(hook.args[0][1]).to.be.equal(inst._removeObsoleteFiles)
+            expect(inst._removeObsoleteFiles.bind.called).to.be.true
+            expect(inst._removeObsoleteFiles.bind.args[0]).to.be.deep.equal([inst, compiler])
+          })
+        it(
+          'SHOULD support legacy compiler.plugin hooks',
+          () => {
             let compiler = {
               plugin: sinon.stub()
             }
-            sinon.stub(inst._removeObsoleteFiles, 'bind').returns(inst._removeObsoleteFiles)
             inst.apply(compiler)
             expect(compiler.plugin.callCount).to.be.equal(1)
             expect(compiler.plugin.args[0][0]).to.be.equal('after-emit')

@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.16",
+    "css-loader": "^0.28.11",
+    "extract-text-webpack-plugin": "^4.0.0-beta",
+    "style-loader": "^0.20.3",
+    "webpack": "^4.0.0",
+    "webpack-chunk-hash": "^0.5.0"
+  }
+}

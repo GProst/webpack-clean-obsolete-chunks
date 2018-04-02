@@ -8,15 +8,24 @@ const {
 } = require('../test-config')
 const getWebpack = require('./get-webpack')
 
-module.exports = function getConfig({webpackVersion = 3, codeSplitting = false, deep = false} = {}) {
+module.exports = function getConfig({webpackVersion = 4, codeSplitting = false, deep = false} = {}) {
   const webpack = getWebpack(webpackVersion)
   const node_modules = path.resolve(__dirname, `../env/webpack-${webpackVersion}/node_modules/`)
 
   const ExtractTextPlugin = require(path.resolve(node_modules, 'extract-text-webpack-plugin'))
   const WebpackChunkHash = require(path.resolve(node_modules, 'webpack-chunk-hash'))
   const CleanWebpackPlugin = require(path.resolve(node_modules, 'clean-webpack-plugin'))
+  const modernWebpack = webpackVersion >= 4
+  let commonsChunkPlugin = null
+  if (!modernWebpack) {
+    commonsChunkPlugin = new webpack.optimize.CommonsChunkPlugin({
+      names: ['commons', 'vendor', 'manifest'],
+      chunks: ['vendor', 'app'],
+      minChunks: Infinity
+    })
+  }
 
-  return {
+  let config = {
     target: 'web',
     context: __dirname,
     entry: codeSplitting ? codeSplittingEntries : commonEntries,
@@ -34,13 +43,9 @@ module.exports = function getConfig({webpackVersion = 3, codeSplitting = false, 
     },
 
     plugins: [
-      codeSplitting ? null : new ExtractTextPlugin('styles.[contenthash].css'),
+      codeSplitting ? null : new ExtractTextPlugin('styles.[hash].css'),
 
-      new webpack.optimize.CommonsChunkPlugin({
-        names: ['commons', 'vendor', 'manifest'],
-        chunks: ['vendor', 'app'],
-        minChuncks: Infinity
-      }),
+      commonsChunkPlugin,
 
       new WebpackChunkHash(),
 
@@ -58,5 +63,12 @@ module.exports = function getConfig({webpackVersion = 3, codeSplitting = false, 
       filename: '[name].[chunkhash].js',
       chunkFilename: '[name].[chunkhash].js'
     }
+  }
+
+  if (modernWebpack) {
+    // Setting runtimeChunk:true mimics the manifest chunk we use for webpack < 3
+    return Object.assign({}, config, {mode: 'development', optimization: {runtimeChunk: true}})
+  } else {
+    return config
   }
 }

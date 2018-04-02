@@ -16,7 +16,12 @@ CleanObsoleteChunks.prototype._setOptions = function(options = {}) {
 }
 
 CleanObsoleteChunks.prototype.apply = function(compiler) {
-  compiler.plugin('after-emit', this._removeObsoleteFiles.bind(this, compiler))
+  const callback = this._removeObsoleteFiles.bind(this, compiler)
+  if (compiler.hooks) {
+    compiler.hooks.afterEmit.tapAsync('webpack-clean-obsolete-chunks', callback)
+  } else {
+    compiler.plugin('after-emit', callback)
+  }
 }
 
 CleanObsoleteChunks.prototype._removeObsoleteFiles = function(compiler, compilation, done) {
