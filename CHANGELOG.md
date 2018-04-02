@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.0 / 2018-04-02
+
+* Add support for Webpack 4 ([#27](https://github.com/GProst/webpack-clean-obsolete-chunks/pull/27))
+
 ## 0.3.0 / 2017-10-20
 
 * Add `deep` option to clean obsolete chunks in child compilations ([#21](https://github.com/GProst/webpack-clean-obsolete-chunks/issues/21))

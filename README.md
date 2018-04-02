@@ -66,7 +66,7 @@ directory after each webpack compilation.
 ## Support
 
 We currently support **Node.js** of version ^6, ^7, ^8 and **Webpack**
-of version ^2, ^3 (but ^1 should work also).
+of version ^2, ^3, or ^4 (but ^1 should work also).
 
 ## Contribution
 
