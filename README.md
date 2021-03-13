@@ -1,5 +1,7 @@
 # webpack-clean-obsolete-chunks
 
+# DEPRECATION NOTE: since Webpack 5.20.0 you can use [`output.clean`](https://webpack.js.org/configuration/output/#outputclean) option
+
 [![npm version](https://badge.fury.io/js/webpack-clean-obsolete-chunks.svg)](https://badge.fury.io/js/webpack-clean-obsolete-chunks)
 [![Coverage Status](https://coveralls.io/repos/github/GProst/webpack-clean-obsolete-chunks/badge.svg?branch=master)](https://coveralls.io/github/GProst/webpack-clean-obsolete-chunks?branch=master)
 [![Build Status](https://travis-ci.org/GProst/webpack-clean-obsolete-chunks.svg?branch=master)](https://travis-ci.org/GProst/webpack-clean-obsolete-chunks)
